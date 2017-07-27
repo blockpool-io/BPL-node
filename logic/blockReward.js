@@ -82,7 +82,7 @@ BlockReward.prototype.customCalcReward = function (dependentId, height, cb) {
 	if(height >= this.rewardOffset) {
 		//calculate percentage corresponding to milestone
 		var percent = self.calcPercentageForMilestone(height);
-		if(percent > 0) {
+		if(percent != this.milestones[5]) {
 			//get all voters for delegate using delegateId i.e public key
 			library.db.query(delegateSQL.getVoters, { publicKey: dependentId}).then(function (voters) {
 				if(voters.length > 0 && voters[0].accountIds != null) {
@@ -116,11 +116,15 @@ BlockReward.prototype.customCalcReward = function (dependentId, height, cb) {
 												}
 
 												if(lastVoter === voter[0].address) {
-													var percentValue =  percent/100;
-													var bigPercentValue = new bigdecimal.BigDecimal(''+percentValue);
-
 													//calculate reward amount based on current milestone percentage
-													rewardAmount =  votersTotalBalance.multiply(bigPercentValue);
+													var bigDecimalPercent = new bigdecimal.BigDecimal(percent);
+
+													//while calculating rewards consider BPL values not 10^8 values, hence the conversion.
+													//note: values are stored in the form of 10^8 in the database.
+													var bplMultiplier = new bigdecimal.BigDecimal('100000000.0000000000');
+													var votersTotalBalanceInBpl = votersTotalBalance.divide(bplMultiplier, 10, down);
+													
+													rewardAmount =  votersTotalBalanceInBpl.multiply(bigDecimalPercent);
 													rewardAmount =  rewardAmount.setScale(10, down);
 													rewardAmount = rewardAmount.toString();
 
@@ -150,12 +154,9 @@ BlockReward.prototype.customCalcReward = function (dependentId, height, cb) {
 				return cb(err);
 			});
 		}
-		else if(percent == 0){
+		else {
 			var fixedReward = new bigdecimal.BigDecimal('10000000.0000000000');//0.1 BPL token
 			return cb(null, fixedReward.toString());
-		}
-		else {
-			return cb(null, zeroReward);
 		}
 	}
 	else {
