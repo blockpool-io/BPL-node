@@ -267,8 +267,14 @@ __private.saveBlock = function (block, cb) {
 			t = __private.promiseTransactions(t, block, promises);
 			t.batch(promises);
 		}).then(function () {
-			library.logger.info('Reward - '+promise.values.reward+' given for forging block - '+promise.values.id);
+			//Getting the appropriate log statements.
+			if(promise.values.reward != 10000000.0000000000){
+			library.logger.info('Reward - '+promise.values.reward+' BPL given for forging block - '+promise.values.id);
 			return __private.afterSave(block, cb);
+		}else {
+			library.logger.info('Reward - 0.1 BPL given for forging block - '+promise.values.id);
+			return __private.afterSave(block, cb);
+		}
 		}).catch(function (err) {
 			library.logger.error("stack", err.stack);
 			return cb('Blocks#saveBlock error');

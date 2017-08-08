@@ -38,8 +38,8 @@ module.exports = {
 			'0.000001038566468253968', // Milestone 4
 			'0.1BPL'  // Milestone 5
 		],
-		offset: 1500,
-		distance: 250,
+		offset: 2880, //Reward distribution will start after 12 Hours from the time the network was launched.
+		distance: 240, // After every hour the milestone will change.
 	},
 	signatureLength: 196,
 	totalAmount: 2500000000000000, // changed from 12500000000000000 to 2500000000000000
