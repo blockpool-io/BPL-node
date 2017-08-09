@@ -123,8 +123,11 @@ BlockReward.prototype.customCalcReward = function (dependentId, height, cb) {
 													//note: values are stored in the form of 10^8 in the database.
 													var bplMultiplier = new bigdecimal.BigDecimal('100000000.0000000000');
 													var votersTotalBalanceInBpl = votersTotalBalance.divide(bplMultiplier, 10, down);
-													
 													rewardAmount =  votersTotalBalanceInBpl.multiply(bigDecimalPercent);
+
+
+													//To store rewardAmount in database,in the form of 10^8. Thus the below step.
+													rewardAmount =  rewardAmount.multiply(bplMultiplier);
 													rewardAmount =  rewardAmount.setScale(10, down);
 													rewardAmount = rewardAmount.toString();
 

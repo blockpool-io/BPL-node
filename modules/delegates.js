@@ -335,12 +335,16 @@ __private.forge = function (cb) {
 							].join(' '));
 							modules.blocks.generateBlock(currentBlockData.keypair, currentBlockData.time, function (err, b) {
 								if(!err){
+									//Storing promise.values.reward in temp so as to convert in BPL format.
+									//Appropriate logging messages.
+									var temp = b.reward;
+									temp/=100000000;
 									library.logger.info([
 										'Forged new block id:', b.id,
 										'height:', b.height,
 										'round:', modules.rounds.getRoundFromHeight(b.height),
 										'slot:', slots.getSlotNumber(currentBlockData.time),
-										'reward:' + b.reward,
+										'reward:' + temp,
 										'transactions:' + b.numberOfTransactions
 									].join(' '));
 									library.bus.message('blockForged', b, cb);
