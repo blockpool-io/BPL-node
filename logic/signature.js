@@ -1,7 +1,7 @@
 'use strict';
 
 var ByteBuffer = require('bytebuffer');
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 
 // Private fields
 var modules, library;

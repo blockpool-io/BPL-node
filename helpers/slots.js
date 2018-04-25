@@ -1,6 +1,6 @@
 'use strict';
 
-var constants = require('./constants.js');
+var constants = require('../constants.json');
 
 /**
  * Get time from Bpl epoch.
@@ -9,8 +9,8 @@ var constants = require('./constants.js');
  */
 
 function beginEpochTime () {
-	var d = constants.epochTime;
-
+	//var d = constants.epochTime;
+	var d = new Date(constants.epochTime);
 	return d;
 }
 

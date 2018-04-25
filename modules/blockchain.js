@@ -1,8 +1,9 @@
 'use strict';
 
 var async = require('async');
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 var slots = require('../helpers/slots.js');
+var constants = require('../constants.json');
 
 var self, library, modules;
 
@@ -491,7 +492,7 @@ __private.timestampState = function (lastReceipt) {
 		__private.lastReceipt.rebuild = __private.lastReceipt.secondsAgo > 200;
 	}
 
-	if(__private.lastBlock.height < 202){
+	if(__private.lastBlock.height < (constants.activeDelegates + 1)){
 		__private.lastReceipt.rebuild = false;
 	}
 

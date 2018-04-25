@@ -1,0 +1,119 @@
+{
+  "port": 9032,
+  "address": "0.0.0.0",
+  "version": "0.3.0",
+  "fileLogLevel": "info",
+  "logFileName": "logs/wbx.log",
+  "consoleLogLevel": "debug",
+  "trustProxy": false,
+  "db": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "wbx_testnet",
+    "user": null,
+    "password": "password",
+    "poolSize": 20,
+    "poolIdleTimeout": 30000,
+    "reapIntervalMillis": 1000,
+    "logEvents": [
+      "error"
+    ]
+  },
+  "api": {
+    "mount": true,
+    "access": {
+      "whiteList": []
+    },
+    "options": {
+      "limits": {
+        "max": 0,
+        "delayMs": 0,
+        "delayAfter": 0,
+        "windowMs": 60000
+      }
+    }
+  },
+  "peers": {
+    "minimumNetworkReach": 1,
+    "list": [
+     {
+        "ip": "lon-01.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-02.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-03.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-04.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-05.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-06.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-07.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-08.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-09.wbx.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "lon-10.wbx.woooba.com",
+        "port": 9032
+      }
+    ],
+    "blackList": [],
+    "options": {
+      "limits": {
+        "max": 0,
+        "delayMs": 0,
+        "delayAfter": 0,
+        "windowMs": 60000
+      },
+      "maxUpdatePeers": 20,
+      "timeout": 5000
+    }
+  },
+  "forging": {
+    "coldstart": 6,
+    "force": true,
+    "secret": [
+    ],
+    "access": {
+      "whiteList": [
+        "127.0.0.1"
+      ]
+    }
+  },
+  "loading": {
+    "verifyOnLoading": false,
+    "loadPerIteration": 5000
+  },
+  "ssl": {
+    "enabled": false,
+    "options": {
+      "port": 443,
+      "address": "0.0.0.0",
+      "key": "./ssl/wbx.key",
+      "cert": "./ssl/wbx.crt"
+    }
+  },
+  "network": "WBX-testnet",
+  "tokenShortName": "WBX",
+  "nethash": "dbb912a604b286bbe2b17e4936b0f71b8cdb1d7dc4660e28118a5ed1700222f8"
+}

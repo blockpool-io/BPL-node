@@ -2,7 +2,7 @@
 
 var async = require('async');
 var bignum = require('../helpers/bignum.js');
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 var ip = require('ip');
 var Router = require('../helpers/router.js');
 var schema = require('../schema/loader.js');
@@ -659,7 +659,7 @@ Loader.prototype.getNetworkSmallestBlock = function(){
 Loader.prototype.getNetwork = function (force, cb) {
 	// If __private.network.height is not so far (i.e. 1 round) from current node height, just return cached __private.network.
 	// If node is forging, do it more often (every block?)
-	var distance = modules.delegates.isActiveDelegate() ? 2 : 201;
+	var distance = modules.delegates.isActiveDelegate() ? 2 : constants.activeDelegates;
 
 	if (!force && __private.network.height > 0 && Math.abs(__private.network.height - modules.blocks.getLastBlock().height) < distance) {
 		return cb(null, __private.network);
@@ -798,13 +798,14 @@ shared.sync = function (req, cb) {
 };
 
 shared.autoconfigure = function (req, cb) {
+	var network = library.config.network;
+	network.nethash = library.config.nethash;
 	return cb(null, {
-		network: {
-	    "nethash": library.config.nethash,
-	    "token": library.config.network.client.token,
-	    "symbol": library.config.network.client.symbol,
-	    "explorer": library.config.network.client.explorer,
-	    "version": library.config.network.pubKeyHash
+		network: network,
+		config: {
+			"delegates": constants.activeDelegates,
+	    "epochTime": constants.epochTime,
+	    "interval": constants.blocktime
 		}
 	});
 };

@@ -8,16 +8,16 @@
   <link rel="stylesheet" media="all" href="bplio.css" />
 </head>
 <body>
-  
+
     <div id="title">
          <h1>signatures.js</h1>
          <img src="https://ark.io/wp-content/uploads/2016/10/ark-normal.png">
         <hr>
     </div>
-  
+
   <div id="container">
     <div id="background"></div>
-    
+
       <ul id="jump_to">
         <li>
           <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
@@ -25,151 +25,151 @@
           <div id="jump_wrapper">
           <div id="jump_page_wrapper">
             <div id="jump_page">
-              
-                
+
+
                 <a class="source" href="README.html">
                   README.md
                 </a>
-              
-                
+
+
                 <a class="source" href="app.html">
                   app.js
                 </a>
-              
-                
+
+
                 <a class="source" href="accounts.html">
                   accounts.js
                 </a>
-              
-                
+
+
                 <a class="source" href="blockchain.html">
                   blockchain.js
                 </a>
-              
-                
+
+
                 <a class="source" href="blocks.html">
                   blocks.js
                 </a>
-              
-                
+
+
                 <a class="source" href="delegates.html">
                   delegates.js
                 </a>
-              
-                
+
+
                 <a class="source" href="loader.html">
                   loader.js
                 </a>
-              
-                
+
+
                 <a class="source" href="multisignatures.html">
                   multisignatures.js
                 </a>
-              
-                
+
+
                 <a class="source" href="nodeManager.html">
                   nodeManager.js
                 </a>
-              
-                
+
+
                 <a class="source" href="peers.html">
                   peers.js
                 </a>
-              
-                
+
+
                 <a class="source" href="rounds.html">
                   rounds.js
                 </a>
-              
-                
+
+
                 <a class="source" href="signatures.html">
                   signatures.js
                 </a>
-              
-                
+
+
                 <a class="source" href="system.html">
                   system.js
                 </a>
-              
-                
+
+
                 <a class="source" href="transactionPool.html">
                   transactionPool.js
                 </a>
-              
-                
+
+
                 <a class="source" href="transactions.html">
                   transactions.js
                 </a>
-              
-                
+
+
                 <a class="source" href="transport.html">
                   transport.js
                 </a>
-              
+
             </div>
           </div>
         </li>
       </ul>
-    
+
     <ul class="sections">
-        
-        
+
+
         <li id="section-1">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre><span class="hljs-meta">'use strict'</span>;
 
 <span class="hljs-keyword">var</span> <span class="hljs-keyword">async</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'async'</span>);
-<span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/constants.js'</span>);
+<span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../constants.json'</span>);
 <span class="hljs-keyword">var</span> crypto = <span class="hljs-built_in">require</span>(<span class="hljs-string">'crypto'</span>);
 <span class="hljs-keyword">var</span> MilestoneBlocks = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/milestoneBlocks.js'</span>);
 <span class="hljs-keyword">var</span> Router = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/router.js'</span>);
 <span class="hljs-keyword">var</span> schema = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../schema/signatures.js'</span>);
 <span class="hljs-keyword">var</span> slots = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/slots.js'</span>);
 <span class="hljs-keyword">var</span> transactionTypes = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/transactionTypes.js'</span>);</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-2">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>Private fields</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> modules, library, self, __private = {}, shared = {};
 
 __private.assetTypes = {};</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-3">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>Constructor</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Signatures</span> (<span class="hljs-params">cb, scope</span>) </span>{
 	library = scope;
 	self = <span class="hljs-keyword">this</span>;
@@ -181,22 +181,22 @@ __private.assetTypes = {};</pre></div></div>
 
 	<span class="hljs-keyword">return</span> cb(<span class="hljs-literal">null</span>, self);
 }</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-4">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Private methods</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.attachApi = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 	<span class="hljs-keyword">var</span> router = <span class="hljs-keyword">new</span> Router();
 
@@ -221,30 +221,30 @@ __private.assetTypes = {};</pre></div></div>
 		res.status(<span class="hljs-number">500</span>).send({<span class="hljs-attr">success</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">error</span>: <span class="hljs-string">'API error: '</span> + err.message});
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-5">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Public methods</p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-6">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
@@ -252,21 +252,21 @@ __private.assetTypes = {};</pre></div></div>
 <p><strong>EVENT</strong> <code>onBind</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-7">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Signatures.prototype.onBind = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">scope</span>) </span>{
 	modules = scope;
 
@@ -274,55 +274,55 @@ __private.assetTypes = {};</pre></div></div>
 		<span class="hljs-attr">modules</span>: modules, <span class="hljs-attr">library</span>: library
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-8">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p><strong>EVENT</strong> <code>onAttachPublicApi</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-9">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Signatures.prototype.onAttachPublicApi = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
  	__private.attachApi();
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-10">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Shared</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>shared.getFee = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, cb</span>) </span>{
 	<span class="hljs-keyword">var</span> fee = <span class="hljs-literal">null</span>;
 
@@ -445,26 +445,26 @@ shared.addSignature = <span class="hljs-function"><span class="hljs-keyword">fun
 
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-11">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Export</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = Signatures;</pre></div></div>
-            
+
         </li>
-        
+
     </ul>
   </div>
 </body>

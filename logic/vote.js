@@ -1,7 +1,7 @@
 'use strict';
 
 var async = require('async');
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 var exceptions = require('../helpers/exceptions.js');
 var Diff = require('../helpers/diff.js');
 
