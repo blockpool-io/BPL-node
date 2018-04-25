@@ -8,9 +8,10 @@
     "pubKeyHash": 25,
     "wif": 170,
     "client": {
-      "token":"BLOCKPOOL",
-      "symbol":"β",
-      "explorer":"http://54.199.172.202:4001"
+      "token": "BLOCKPOOL",
+      "tokenShortName": "BPL",
+      "symbol": "β",
+      "explorer": "http://54.199.172.202:4001"
     }
   },
   "BPL-testnet": {
@@ -22,24 +23,26 @@
     "pubKeyHash": 25,
     "wif": 170,
     "client": {
-      "token":"BLOCKPOOL",
-      "symbol":"β",
-      "explorer":"http://52.66.184.223:4010"
-      }
+      "token": "BLOCKPOOL",
+      "tokenShortName": "BPL",
+      "symbol": "β",
+      "explorer": "http://52.66.184.223:9029"
+    }
+  },
+  "BPL-mainnet": {
+    "messagePrefix": "BPL message:\n",
+    "bip32": {
+      "public": 46090600,
+      "private": 46089520
     },
-    "BPL-mainnet": {
-      "messagePrefix": "BPL message:\n",
-      "bip32": {
-        "public": 46090600,
-        "private": 46089520
-      },
-      "pubKeyHash": 25,
-      "wif": 170,
-      "client": {
-        "token":"BLOCKPOOL",
-        "symbol":"β",
-        "explorer":"http://13.56.163.57:9031"
-      }
+    "pubKeyHash": 25,
+    "wif": 170,
+    "client": {
+      "token": "BLOCKPOOL",
+      "tokenShortName": "BPL",
+      "symbol": "β",
+      "explorer": "http://13.56.163.57:9031"
+    }
   },
   "bitcoin": {
     "messagePrefix": "Bitcoin message:\n",
@@ -50,8 +53,39 @@
     "pubKeyHash": 1,
     "wif": 1,
     "client": {
-      "token":"Bitcoin",
-      "symbol":"B"
+      "token": "Bitcoin",
+      "tokenShortName": "BTC",
+      "symbol": "B"
+    }
+  },
+  "WBX-mainnet": {
+    "messagePrefix": "WBX message:\n",
+    "bip32": {
+      "public": 46090600,
+      "private": 46089520
+    },
+    "pubKeyHash": 73,
+    "wif": 170,
+    "client": {
+      "token": "WOOBUX",
+      "tokenShortName": "WBX",
+      "symbol": "W",
+      "explorer": "http://165.227.224.102:9033"
+    }
+  },
+  "WBX-testnet": {
+    "messagePrefix": "WBX message:\n",
+    "bip32": {
+      "public": 46090600,
+      "private": 46089520
+    },
+    "pubKeyHash": 73,
+    "wif": 170,
+    "client": {
+      "token": "WOOBUX",
+      "tokenShortName": "WBX",
+      "symbol": "W",
+      "explorer": "http://165.227.224.102:9033"
     }
   }
 }

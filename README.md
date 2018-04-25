@@ -1,3 +1,44 @@
+# BLOCKPOOL
+
+
+# Simple Blockpool Node Installation #
+
+Download the Blockpool install script
+
+https://github.com/blockpool-io/BPL-node/blob/bpl-mainnet/BPL_Node_Install_Script.sh
+
+Open up your terminal
+./BPL_Node_Install_Script.sh
+
+Let the script finish.
+
+**Add configurations for your node**
+
+```
+	Change the following in config.mainnet.json :
+“address“: “set your IP”
+“database”: “set database name”
+“user”: “set database user”
+“password”: “set database password”
+“list”: [
+	{
+		“ip”: “set your IP address”
+		“port”: “set the port on which your node will be running”
+	},
+{
+		“ip”: “Set seed node IP address”
+		“port”: “set the port on which seed node will be running”
+	}
+]
+```
+
+**Launch BPL node**
+
+```
+To launch BPL node on mainnet:
+forever start app.js -c config.mainnet.json -g genesisBlock.mainnet.json
+```
+
 # Detailed steps for setting up BPL node on Linux, Windows and Debian
 
 
@@ -42,7 +83,7 @@ createdb ‘Database Name’  (this should match with the database name from con
 ```
 git clone https://github.com/blockpool-io/BPL-node.git   (make sure you have git installed)
 cd BPL-node
-git checkout testnet
+git checkout bpl-mainnet
 ```
 
 **Install node modules**
@@ -51,12 +92,13 @@ git checkout testnet
 sudo apt-get install -y libpq-dev
 npm install libpq secp256k1
 npm install
+npm install forever -g
 ```
 
 **Add configurations for your node**
 
 ```
-	Change the following in config.testnet.json :
+	Change the following in config.mainnet.json :
 “address“: “set your IP”
 “database”: “set database name”
 “user”: “set database user”
@@ -76,8 +118,8 @@ npm install
 **Launch BPL node**
 
 ```
-To launch BPL node on testnet:
-npm run start:bpltestnet
+To launch BPL node on mainnet:
+forever start app.js -c config.mainnet.json -g genesisBlock.mainnet.json
 ```
 
 
@@ -125,7 +167,7 @@ Create database ‘Database Name’ Name’  (this should match with the databas
 ```
 git clone https://github.com/blockpool-io/BPL-node.git (make sure you have git installed)
 cd BPL-node
-git checkout testnet
+git checkout bpl-mainnet
 ```
 
 **Install node modules**
@@ -139,7 +181,7 @@ npm install
 **Add configurations for your node**
 
 ```
-Change the following in config.private.json:
+Change the following in config.mainnet.json:
 “address“: “set your IP”
 “database”: “set database name”
 “user”: “set database user”
@@ -158,10 +200,10 @@ Change the following in config.private.json:
 ```
 
 **Launch BPL node**
-**To launch BPL on testnet:**
+**To launch BPL on mainnet:**
 
 ```
-npm run start:bpltestnet
+npm run start:bplmainnet
 ```
 
 
@@ -214,7 +256,7 @@ sudo apt-get install -y git
 
 git clone https://github.com/blockpool-io/BPL-node.git   (make sure you have git installed)
 cd BPL-node
-git checkout testnet
+git checkout mainnet
 ```
 
 **Install node modules**
@@ -226,7 +268,7 @@ npm install
 ```
 
 **Add configurations for your node**
-**Change the following in config.private.json:**
+**Change the following in config.mainnet.json:**
 
 ```
 “address“: “set your IP”
@@ -246,13 +288,11 @@ npm install
 ```
 
 **Launch BPL node**
-**To launch BPL node on testnet:**
+**To launch BPL node on mainnet:**
 
 ```
-npm run start:bpltestnet
+npm run start:bplmainnet
 ```
-
-**NOTE:** The master passphrase for this test genesis block is as follows:
 
 ```
 ,,,,,,,,,,,,

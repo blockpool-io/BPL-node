@@ -2,14 +2,14 @@
 
 var bignum = require('../helpers/bignum.js');
 var BlockReward = require('../logic/blockReward.js');
-var constants = require('../helpers/constants.js');
 var crypto = require('crypto');
-var bpljs = require('bpljs');
 var extend = require('extend');
 var Router = require('../helpers/router.js');
 var schema = require('../schema/accounts.js');
 var slots = require('../helpers/slots.js');
 var transactionTypes = require('../helpers/transactionTypes.js');
+var constants = require('../constants.json');
+var bpljs = require('bpljs');
 
 // Private fields
 var modules, library, self, __private = {}, shared = {};
@@ -22,11 +22,17 @@ function Accounts (cb, scope) {
 	library = scope;
 	self = this;
 
+	bpljs = new bpljs.BplClass({
+		"delegates": constants.activeDelegates,
+		"epochTime": constants.epochTime,
+		"interval": constants.blocktime,
+		"network": scope.config.network
+	});
+
 	var Vote = require('../logic/vote.js');
 	__private.assetTypes[transactionTypes.VOTE] = library.logic.transaction.attachAssetType(
 		transactionTypes.VOTE, new Vote()
 	);
-
 	return cb(null, self);
 }
 
@@ -209,7 +215,7 @@ shared.getBalance = function (req, cb) {
 			return cb(err[0].message);
 		}
 
-		var isAddress = /^[1-9A-Za-z]{1,35}$/g;
+		var isAddress = /^[1-9A-Za-z_]{1,45}$/g;
 		if (!isAddress.test(req.body.address)) {
 			return cb('Invalid address');
 		}
@@ -233,7 +239,7 @@ shared.getPublickey = function (req, cb) {
 			return cb(err[0].message);
 		}
 
-		var isAddress = /^[1-9A-Za-z]{1,35}$/g;
+		var isAddress = /^[1-9A-Za-z_]{1,45}$/g;
 		if (!isAddress.test(req.body.address)) {
 			return cb('Invalid address');
 		}
@@ -417,7 +423,7 @@ shared.getAccount = function (req, cb) {
 			return cb(err[0].message);
 		}
 
-		var isAddress = /^[1-9A-Za-z]{1,35}$/g;
+		var isAddress = /^[1-9A-Za-z_]{1,45}$/g;
 		if (!isAddress.test(req.body.address)) {
 			return cb('Invalid address');
 		}

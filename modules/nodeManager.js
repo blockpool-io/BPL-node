@@ -6,6 +6,7 @@ var sql = require('../sql/nodeManager.js');
 var os = require('os');
 var bigdecimal = require("bigdecimal");
 var Script = require('../logic/script.js');
+var constants = require('../constants.json');
 
 var self, library, modules;
 
@@ -210,7 +211,7 @@ NodeManager.prototype.onRebuildBlockchain = function(blocksToRemove, state, cb) 
 				else if(network.height > lastBlock.height){
 					library.logger.info("Observed network height is higher", {network: network.height, node:lastBlock.height});
 					library.logger.info("Rebuilding from network");
-					if(network.height - lastBlock.height > 201){
+					if(network.height - lastBlock.height > constants.activeDelegates){
 						blocksToRemove = 200;
 					}
 					return modules.blocks.removeSomeBlocks(blocksToRemove, mSequence);
@@ -519,7 +520,6 @@ NodeManager.prototype.onBlockReceived = function(block, peer, cb) {
 				});
 			}
 			library.logger.info("New block received", {id: block.id, height:block.height, transactions: block.numberOfTransactions, peer:peer.string});
-			__private.script.triggerPortChangeScript(block.height);
 
 			block.verified = false;
 			block.processed = false;

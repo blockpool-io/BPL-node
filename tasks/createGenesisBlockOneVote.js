@@ -1,13 +1,14 @@
 var moment = require('moment');
 var fs = require('fs');
 var path = require('path');
-var bpljs = require('bpljs');
 var crypto = require('crypto');
 var bip39 = require('bip39');
 var ByteBuffer = require('bytebuffer');
 var bignum = require('../helpers/bignum.js');
 var Crypto = require('../helpers/crypto.js');
 var networks = require('../networks.json');
+var constants = require('../constants.json');
+var bpljs = require('bpljs');
 
 var genesisAccounts = JSON.parse(fs.readFileSync('./tasks/genesis.testnet.accounts.json'));
 var remainingfund = {};

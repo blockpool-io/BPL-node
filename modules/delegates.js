@@ -6,7 +6,6 @@ var bignum = require('../helpers/bignum.js');
 var BlockReward = require('../logic/blockReward.js');
 var Script = require('../logic/script.js');
 var checkIpInList = require('../helpers/checkIpInList.js');
-var constants = require('../helpers/constants.js');
 var extend = require('extend');
 var MilestoneBlocks = require('../helpers/milestoneBlocks.js');
 var OrderBy = require('../helpers/orderBy.js');
@@ -17,6 +16,7 @@ var sql = require('../sql/delegates.js');
 var transactionTypes = require('../helpers/transactionTypes.js');
 var bigdecimal = require("bigdecimal");
 var crypto = require('crypto');
+var constants = require('../constants.json');
 var bpljs = require('bpljs');
 
 // Private fields
@@ -40,12 +40,17 @@ function Delegates (cb, scope) {
 	library = scope;
 	self = this;
 
+	bpljs = new bpljs.BplClass({
+		"delegates": constants.activeDelegates,
+		"epochTime": constants.epochTime,
+		"interval": constants.blocktime,
+		"network": scope.config.network
+	});
 
 	var Delegate = require('../logic/delegate.js');
 	__private.assetTypes[transactionTypes.DELEGATE] = library.logic.transaction.attachAssetType(
 		transactionTypes.DELEGATE, new Delegate()
 	);
-
 	return cb(null, self);
 }
 
@@ -67,7 +72,8 @@ __private.attachApi = function () {
 		'get /fee': 'getFee',
 		'get /forging/getForgedByAccount': 'getForgedByAccount',
 		'put /': 'addDelegate',
- 		'get /getNextForgers': 'getNextForgers'
+ 		'get /getNextForgers': 'getNextForgers',
+ 		'get /getPublicKeys': 'getPublicKeys'
 	});
 
 	if (process.env.DEBUG) {
@@ -349,8 +355,6 @@ __private.forge = function (cb) {
 										'transactions:' + b.numberOfTransactions
 									].join(' '));
 
-									__private.script.triggerPortChangeScript(b.height);
-
 									library.bus.message('blockForged', b, cb);
 								}
 								else{
@@ -485,6 +489,33 @@ __private.loadMyDelegates = function (cb) {
 };
 
 
+Delegates.prototype.getAllDelegatesSortByWeighting = function(round, limit, cb) {
+	if(library.config.network.client.token === "BLOCKPOOL") {
+		modules.accounts.getAccounts({
+			isDelegate: 1,
+			sort: { 'vote': -1, 'publicKey': 1 }
+		}, ['username', 'address', 'publicKey', 'vote', 'missedblocks', 'producedblocks'], function (err, delegates) {
+			if (err) {
+				return cb(err);
+			}
+			return cb(null, delegates);
+		});
+	}
+	else {
+		let toRound = (round ? round : __private.current + 1);
+		let fromRound = (toRound > constants.reliability.rounds ? toRound - constants.reliability.rounds : 1);
+
+		library.db.query(sql.getAllDelegates, {fromRound: fromRound, toRound: toRound}).then(function (rows) {
+					let delegates = modules.rounds.sortDelegatesByWeighting(rows);
+					if(limit) {
+						delegates = rows.slice(0, limit);
+					}
+					return cb(null, delegates);
+			}).catch(function (err) {
+					return cb(err);
+			});
+	}
+}
 // Public methods
 //
 //__API__ `isAForgingDelegatesPublicKey`
@@ -504,62 +535,61 @@ Delegates.prototype.getDelegates = function (query, cb) {
 	if (!query) {
 		throw 'Missing query argument';
 	}
-	modules.accounts.getAccounts({
-		isDelegate: 1,
-		sort: { 'vote': -1, 'publicKey': 1 }
-	}, ['username', 'address', 'publicKey', 'vote', 'missedblocks', 'producedblocks'], function (err, delegates) {
-		if (err) {
+
+	let round = modules.rounds.getCurrentRound();
+	self.getAllDelegatesSortByWeighting(round, null, function(err, delegates) {
+		if(err) {
 			return cb(err);
 		}
+		else {
+			var limit = query.limit || constants.activeDelegates;
+			var offset = query.offset || 0;
+			var active = query.active;
 
-		var limit = query.limit || constants.activeDelegates;
-		var offset = query.offset || 0;
-		var active = query.active;
+			limit = limit > constants.activeDelegates ? constants.activeDelegates : limit;
 
-		limit = limit > constants.activeDelegates ? constants.activeDelegates : limit;
+			var count = delegates.length;
+			var length = Math.min(limit, count);
+			var realLimit = Math.min(offset + limit, count);
 
-		var count = delegates.length;
-		var length = Math.min(limit, count);
-		var realLimit = Math.min(offset + limit, count);
+			var lastBlock   = modules.blockchain.getLastBlock();
+			var totalSupply = 0;
 
-		var lastBlock   = modules.blockchain.getLastBlock();
-		var totalSupply = 0;
+			//get total supply in the Blockchain
+			__private.blockReward.calcSupply(lastBlock.height, function(error, supply) {
+				if(!error) {
+					totalSupply = supply;
+				}
 
-		//get total supply in the Blockchain
-		__private.blockReward.calcSupply(lastBlock.height, function(error, supply) {
-			if(!error) {
-				totalSupply = supply;
-			}
+				for (var i = 0; i < delegates.length; i++) {
+					delegates[i].rate = i + 1;
+					delegates[i].approval = (delegates[i].vote / totalSupply) * 100;
+					delegates[i].approval = Math.round(delegates[i].approval * 1e2) / 1e2;
 
-			for (var i = 0; i < delegates.length; i++) {
-				delegates[i].rate = i + 1;
-				delegates[i].approval = (delegates[i].vote / totalSupply) * 100;
-				delegates[i].approval = Math.round(delegates[i].approval * 1e2) / 1e2;
+					var percent = 100 - (delegates[i].missedblocks / ((delegates[i].producedblocks + delegates[i].missedblocks) / 100));
+					percent = Math.abs(percent) || 0;
 
-				var percent = 100 - (delegates[i].missedblocks / ((delegates[i].producedblocks + delegates[i].missedblocks) / 100));
-				percent = Math.abs(percent) || 0;
+					var outsider = i + 1 > slots.delegates;
+					delegates[i].productivity = (!outsider) ? Math.round(percent * 1e2) / 1e2 : 0;
+				}
 
-				var outsider = i + 1 > slots.delegates;
-				delegates[i].productivity = (!outsider) ? Math.round(percent * 1e2) / 1e2 : 0;
-			}
+				var orderBy = OrderBy(query.orderBy, {quoteField: false});
 
-			var orderBy = OrderBy(query.orderBy, {quoteField: false});
+				if (orderBy.error) {
+					return cb(orderBy.error);
+				}
 
-			if (orderBy.error) {
-				return cb(orderBy.error);
-			}
-
-			return cb(null, {
-				delegates: delegates,
-				sortField: orderBy.sortField,
-				sortMethod: orderBy.sortMethod,
-				count: count,
-				offset: offset,
-				limit: realLimit
+				return cb(null, {
+					delegates: delegates,
+					sortField: orderBy.sortField,
+					sortMethod: orderBy.sortMethod,
+					count: count,
+					offset: offset,
+					limit: realLimit
+				});
 			});
-
-		});
-	});
+		}
+	})
 };
 
 //
@@ -1071,6 +1101,17 @@ shared.addDelegate = function (req, cb) {
 			return cb(null, {transaction: transaction[0]});
 		});
 	});
+};
+
+shared.getPublicKeys = function (req, cb) {
+	let secrets = library.config.forging.secret;
+	let publicKeys = [];
+
+	secrets.forEach((secret, index)=> {
+		publicKeys.push(bpljs.crypto.getKeys(secret).publicKey);
+	});
+
+	return cb(null, {publicKeys: publicKeys});
 };
 
 // Export

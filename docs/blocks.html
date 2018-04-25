@@ -8,16 +8,16 @@
   <link rel="stylesheet" media="all" href="arkio.css" />
 </head>
 <body>
-  
+
     <div id="title">
          <h1>blocks.js</h1>
          <img src="https://ark.io/wp-content/uploads/2016/10/ark-normal.png">
         <hr>
     </div>
-  
+
   <div id="container">
     <div id="background"></div>
-    
+
       <ul id="jump_to">
         <li>
           <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
@@ -25,113 +25,113 @@
           <div id="jump_wrapper">
           <div id="jump_page_wrapper">
             <div id="jump_page">
-              
-                
+
+
                 <a class="source" href="README.html">
                   README.md
                 </a>
-              
-                
+
+
                 <a class="source" href="app.html">
                   app.js
                 </a>
-              
-                
+
+
                 <a class="source" href="accounts.html">
                   accounts.js
                 </a>
-              
-                
+
+
                 <a class="source" href="blockchain.html">
                   blockchain.js
                 </a>
-              
-                
+
+
                 <a class="source" href="blocks.html">
                   blocks.js
                 </a>
-              
-                
+
+
                 <a class="source" href="delegates.html">
                   delegates.js
                 </a>
-              
-                
+
+
                 <a class="source" href="loader.html">
                   loader.js
                 </a>
-              
-                
+
+
                 <a class="source" href="multisignatures.html">
                   multisignatures.js
                 </a>
-              
-                
+
+
                 <a class="source" href="nodeManager.html">
                   nodeManager.js
                 </a>
-              
-                
+
+
                 <a class="source" href="peers.html">
                   peers.js
                 </a>
-              
-                
+
+
                 <a class="source" href="rounds.html">
                   rounds.js
                 </a>
-              
-                
+
+
                 <a class="source" href="signatures.html">
                   signatures.js
                 </a>
-              
-                
+
+
                 <a class="source" href="system.html">
                   system.js
                 </a>
-              
-                
+
+
                 <a class="source" href="transactionPool.html">
                   transactionPool.js
                 </a>
-              
-                
+
+
                 <a class="source" href="transactions.html">
                   transactions.js
                 </a>
-              
-                
+
+
                 <a class="source" href="transport.html">
                   transport.js
                 </a>
-              
+
             </div>
           </div>
         </li>
       </ul>
-    
+
     <ul class="sections">
-        
-        
+
+
         <li id="section-1">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre><span class="hljs-meta">'use strict'</span>;
 
 <span class="hljs-keyword">var</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'lodash'</span>);
 <span class="hljs-keyword">var</span> <span class="hljs-keyword">async</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'async'</span>);
 <span class="hljs-keyword">var</span> BlockReward = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../logic/blockReward.js'</span>);
 <span class="hljs-keyword">var</span> ByteBuffer = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bytebuffer'</span>);
-<span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/constants.js'</span>);
+<span class="hljs-keyword">var</span> constants = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../constants.json'</span>);
 <span class="hljs-keyword">var</span> crypto = <span class="hljs-built_in">require</span>(<span class="hljs-string">'crypto'</span>);
 <span class="hljs-keyword">var</span> genesisblock = <span class="hljs-literal">null</span>;
 <span class="hljs-keyword">var</span> Inserts = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/inserts.js'</span>);
@@ -142,124 +142,124 @@
 <span class="hljs-keyword">var</span> slots = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/slots.js'</span>);
 <span class="hljs-keyword">var</span> sql = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../sql/blocks.js'</span>);
 <span class="hljs-keyword">var</span> transactionTypes = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../helpers/transactionTypes.js'</span>);</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-2">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>Private fields</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> modules, library, self, __private = {}, shared = {};</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-3">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>Last time received a block</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.lastReceipt = <span class="hljs-literal">null</span>;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-4">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Block reward calculation</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.blockReward = <span class="hljs-keyword">new</span> BlockReward();</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-5">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Blockchain is loaded from peers</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.loaded = <span class="hljs-literal">false</span>;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-6">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Request for shutdown, please clean/stop your job, will shutdown when isActive = false</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.cleanup = <span class="hljs-literal">false</span>;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-7">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>To prevent from shutdown if true, that would lead to unstable database state</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.noShutdownRequired = <span class="hljs-literal">false</span>;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-8">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>@formatter:off</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.blocksDataFields = {
 	<span class="hljs-string">'b_id'</span>: <span class="hljs-built_in">String</span>,
 	<span class="hljs-string">'b_version'</span>: <span class="hljs-built_in">Number</span>,
@@ -294,37 +294,37 @@
 	<span class="hljs-string">'t_requesterPublicKey'</span>: <span class="hljs-built_in">String</span>,
 	<span class="hljs-string">'t_signatures'</span>: <span class="hljs-built_in">String</span>
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-9">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>@formatter:on</p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-10">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Constructor</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Blocks</span> (<span class="hljs-params">cb, scope</span>) </span>{
 	library = scope;
 	genesisblock = library.genesisblock;
@@ -334,22 +334,22 @@
 		<span class="hljs-keyword">return</span> cb(err, self);
 	});
 }</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-11">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Private methods</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.attachApi = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 	<span class="hljs-keyword">var</span> router = <span class="hljs-keyword">new</span> Router();
 
@@ -599,41 +599,41 @@ __private.getPreviousBlock = <span class="hljs-function"><span class="hljs-keywo
 		}).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">rows</span>) </span>{
 
 			previousBlock = rows[<span class="hljs-number">0</span>];</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-12">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>TODO: get this right without this cleaning</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>			previousBlock.reward = <span class="hljs-built_in">parseInt</span>(previousBlock.reward);
 			previousBlock.totalAmount = <span class="hljs-built_in">parseInt</span>(previousBlock.totalAmount);
 			previousBlock.totalFee = <span class="hljs-built_in">parseInt</span>(previousBlock.totalFee);</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-13">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>we add this previous block in the mem blockchain</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>			modules.blockchain.upsertBlock(previousBlock);
 
 			cb(<span class="hljs-literal">null</span>, previousBlock);
@@ -657,22 +657,22 @@ __private.popLastBlock = <span class="hljs-function"><span class="hljs-keyword">
 				<span class="hljs-keyword">return</span> cb(err);
 			}
 			<span class="hljs-keyword">if</span> (!previousBlock) {</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-14">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>very wrong removing block from db only</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>				self.simpleDeleteAfterBlock(oldLastBlock.id, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
 					library.logger.warn(<span class="hljs-string">"removing block"</span>, oldLastBlock.height);
 					modules.blockchain.removeBlock(oldLastBlock);
@@ -690,15 +690,15 @@ __private.popLastBlock = <span class="hljs-function"><span class="hljs-keyword">
 					}
 				], cb);
 			}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-15">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
@@ -706,7 +706,7 @@ __private.popLastBlock = <span class="hljs-function"><span class="hljs-keyword">
 library.bus.message(“receiveTransactions”)</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>				modules.rounds.backwardTick(oldLastBlock, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					__private.deleteBlock(oldLastBlock.id, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
 						library.logger.warn(<span class="hljs-string">"removing block"</span>, oldLastBlock.height);
@@ -736,22 +736,22 @@ __private.getIdSequence = <span class="hljs-function"><span class="hljs-keyword"
 				rows.push(__genesisblock);
 			}
 		}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-16">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>multithread will eat you</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> lastBlock = modules.blockchain.getLastBlock();
 
 		<span class="hljs-keyword">if</span> (lastBlock &amp;&amp; !_.includes(rows, lastBlock.id)) {
@@ -835,15 +835,15 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 		});
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-17">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
@@ -851,21 +851,21 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 <p><strong>API</strong> <code>lastReceipt</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-18">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.lastReceipt = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">lastReceipt</span>) </span>{
 	<span class="hljs-keyword">if</span>(lastReceipt){
 		__private.lastReceipt = lastReceipt;
@@ -896,36 +896,36 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 	}
 	<span class="hljs-keyword">return</span> __private.lastReceipt;
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-19">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p><strong>API</strong> <code>getTransactionsFromIds</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-20">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.getTransactionsFromIds = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">blockid, ids, cb</span>)</span>{
 	__private.getById(blockid, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, block</span>) </span>{
 		<span class="hljs-keyword">if</span> (!block || err) {
@@ -940,36 +940,36 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 		<span class="hljs-keyword">return</span> cb(<span class="hljs-literal">null</span>, transactions);
 	});
 }</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-21">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p><strong>API</strong> <code>getCommonBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-22">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.getCommonBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">peer, height, cb</span>) </span>{
 	<span class="hljs-keyword">async</span>.waterfall([
 		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">waterCb</span>) </span>{
@@ -1014,36 +1014,36 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 		<span class="hljs-keyword">return</span> cb(err, res);
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-23">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p><strong>API</strong> <code>count</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-24">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.count = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cb</span>) </span>{
 	library.db.query(sql.countByRowId).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">rows</span>) </span>{
 		<span class="hljs-keyword">var</span> res = rows.length ? rows[<span class="hljs-number">0</span>].count : <span class="hljs-number">0</span>;
@@ -1054,36 +1054,36 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 		<span class="hljs-keyword">return</span> cb(<span class="hljs-string">'Blocks#count error'</span>);
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-25">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p><strong>API</strong> <code>loadBlocksData</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-26">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.loadBlocksData = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">filter, options, cb</span>) </span>{
 	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length &lt; <span class="hljs-number">3</span>) {
 		cb = options;
@@ -1122,36 +1122,36 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 		});
 	}, cb);
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-27">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p><strong>API</strong> <code>loadBlocksPart</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-28">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.loadBlocksPart = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">filter, cb</span>) </span>{
 	self.loadBlocksData(filter, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, rows</span>) </span>{
 		<span class="hljs-keyword">var</span> blocks = [];
@@ -1163,36 +1163,36 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 		<span class="hljs-keyword">return</span> cb(err, blocks);
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-29">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p><strong>API</strong> <code>loadBlocksOffset</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-30">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.loadBlocksOffset = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">limit, offset, verify, cb</span>) </span>{
 	<span class="hljs-keyword">var</span> newLimit = limit + (offset || <span class="hljs-number">0</span>);
 	<span class="hljs-keyword">var</span> params = { <span class="hljs-attr">limit</span>: newLimit, <span class="hljs-attr">offset</span>: offset || <span class="hljs-number">0</span> };
@@ -1201,40 +1201,40 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 
 	<span class="hljs-keyword">var</span> lastBlock;
 	library.db.query(sql.loadBlocksOffset, params).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">blocks</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-31">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>var blocks = __private.readDbRows(rows);</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>
 		<span class="hljs-keyword">async</span>.eachSeries(blocks, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, seriesCb</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-32">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>TODO: dirty fix due to ill sql request</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>			block.reward = <span class="hljs-built_in">parseInt</span>(block.reward);
 			block.totalAmount = <span class="hljs-built_in">parseInt</span>(block.totalAmount);
 			block.totalFee = <span class="hljs-built_in">parseInt</span>(block.totalFee);
@@ -1242,15 +1242,15 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 				library.logger.info(<span class="hljs-string">"Processing block height"</span>, block.height);
 			}
 			<span class="hljs-keyword">if</span> (verify &amp;&amp; block.id !== genesisblock.block.id) {</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-33">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
@@ -1258,7 +1258,7 @@ __private.applyGenesisTransaction = <span class="hljs-function"><span class="hlj
 No access to database.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> check = self.verifyBlock(block, <span class="hljs-literal">true</span>);
 
 				<span class="hljs-keyword">if</span> (!check.verified) {
@@ -1296,68 +1296,68 @@ No access to database.</p>
 		<span class="hljs-keyword">return</span> cb(<span class="hljs-string">'Blocks#loadBlocksOffset error'</span>, lastBlock);
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-34">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p><strong>API</strong> <code>removeSomeBlocks</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-35">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.removeSomeBlocks = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">numbers, cb</span>)</span>{
 	<span class="hljs-keyword">if</span> (modules.blockchain.getLastBlock().height === <span class="hljs-number">1</span>) {
 		<span class="hljs-keyword">return</span> cb();
 	}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-36">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Don’t shutdown now</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>	__private.noShutdownRequired = <span class="hljs-literal">true</span>;
 
 	<span class="hljs-keyword">async</span>.series({</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-37">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
@@ -1365,29 +1365,29 @@ No access to database.</p>
 We won’t apply them again since we will have to resync blocks back from network</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		undoUnconfirmedList: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">seriesCb</span>) </span>{
 			modules.transactionPool.undoUnconfirmedList([],seriesCb);
 		},
    	<span class="hljs-attr">popLastBlock</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">seriesCb</span>) </span>{
 			<span class="hljs-keyword">async</span>.whilst(
 				<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-38">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>if numbers = 50, on average remove 50 Blocks, roughly 1 round</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">return</span> (<span class="hljs-built_in">Math</span>.random() &gt; <span class="hljs-number">1</span>/(numbers+<span class="hljs-number">1</span>));
 				},
 				<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">next</span>) </span>{
@@ -1406,105 +1406,105 @@ We won’t apply them again since we will have to resync blocks back from networ
 			);
    	}
 	}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-39">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>Reset the last receipt</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		self.lastReceipt(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-40">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>Allow shutdown, database writes are finished.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		__private.noShutdownRequired = <span class="hljs-literal">false</span>;
 		<span class="hljs-keyword">return</span> cb(err, modules.blockchain.getLastBlock());
 	});
 }</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-41">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p><strong>API</strong> <code>removeLastBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-42">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.removeLastBlock = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cb</span>)</span>{
 	<span class="hljs-keyword">if</span> (modules.blockchain.getLastBlock().height === <span class="hljs-number">1</span>) {
 		<span class="hljs-keyword">return</span> cb();
 	}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-43">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>Don’t shutdown now</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>	__private.noShutdownRequired = <span class="hljs-literal">true</span>;
 
 	<span class="hljs-keyword">async</span>.series({</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-44">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
@@ -1512,7 +1512,7 @@ We won’t apply them again since we will have to resync blocks back from networ
 We won’t apply them again since we will have to resync blocks back from network</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		undoUnconfirmedList: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">seriesCb</span>) </span>{
 			modules.transactionPool.undoUnconfirmedList([], seriesCb);
 		},
@@ -1527,94 +1527,94 @@ We won’t apply them again since we will have to resync blocks back from networ
 			});
    	}
 	}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-45">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>Reset the last receipt</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		self.lastReceipt(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-46">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Allow shutdown, database writes are finished.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		__private.noShutdownRequired = <span class="hljs-literal">false</span>;
 		<span class="hljs-keyword">return</span> cb(err);
 	});
 }</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-47">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p><strong>API</strong> <code>loadLastBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-48">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>get the last block from the db</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.loadLastBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cb</span>) </span>{
 	library.dbSequence.add(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cb</span>) </span>{
 		library.db.query(sql.loadLastBlock).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">rows</span>) </span>{
 			<span class="hljs-keyword">var</span> block=rows[<span class="hljs-number">0</span>];</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-49">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>TODO: dirty fix due to ill sql request</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>			block.reward = <span class="hljs-built_in">parseInt</span>(block.reward);
 			block.totalAmount = <span class="hljs-built_in">parseInt</span>(block.totalAmount);
 			block.totalFee = <span class="hljs-built_in">parseInt</span>(block.totalFee);
@@ -1628,36 +1628,36 @@ We won’t apply them again since we will have to resync blocks back from networ
 		});
 	}, cb);
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-50">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p><strong>API</strong> <code>getLastBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-51">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.getLastBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 	<span class="hljs-keyword">var</span> lastBlock = modules.blockchain.getLastBlock();
 
@@ -1672,36 +1672,36 @@ We won’t apply them again since we will have to resync blocks back from networ
 
 	<span class="hljs-keyword">return</span> lastBlock;
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-52">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p><strong>EVENT</strong> <code>onVerifyBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-53">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.onVerifyBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, cb</span>) </span>{
 	<span class="hljs-keyword">var</span> result = self.verifyBlock(block, <span class="hljs-literal">true</span>);
 
@@ -1712,36 +1712,36 @@ We won’t apply them again since we will have to resync blocks back from networ
 		<span class="hljs-keyword">return</span> cb &amp;&amp; cb(result.errors.join(<span class="hljs-string">" - "</span>), block);
 	}
 }</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-54">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p><strong>API</strong> <code>verifyBlockHeader</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-55">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.verifyBlockHeader = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block</span>) </span>{
 	<span class="hljs-keyword">var</span> result = { <span class="hljs-attr">verified</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">errors</span>: [] };
 	<span class="hljs-keyword">if</span>(!block.transactions){
@@ -1803,15 +1803,15 @@ We won’t apply them again since we will have to resync blocks back from networ
 	result.verified = block.height === <span class="hljs-number">1</span> || result.errors.length === <span class="hljs-number">0</span>;
 	<span class="hljs-keyword">return</span> result;
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-56">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
@@ -1821,21 +1821,21 @@ checkPreviousBlock: includes check if we have the previous block of the internal
 <p><strong>API</strong> <code>verifyBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-57">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.verifyBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, checkPreviousBlock</span>) </span>{
 	<span class="hljs-keyword">var</span> result = { <span class="hljs-attr">verified</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">errors</span>: [] };
 
@@ -1891,22 +1891,22 @@ checkPreviousBlock: includes check if we have the previous block of the internal
 	<span class="hljs-keyword">if</span> (blockSlotNumber &gt; slots.getSlotNumber()){
 		result.errors.push(<span class="hljs-string">'Invalid block timestamp'</span>);
 	}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-58">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>Disabling to allow orphanedBlocks?</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span>(previousBlock){
 		<span class="hljs-keyword">var</span> lastBlockSlotNumber = slots.getSlotNumber(previousBlock.timestamp);
 		<span class="hljs-keyword">if</span>(blockSlotNumber &lt; lastBlockSlotNumber) {
@@ -1925,22 +1925,22 @@ checkPreviousBlock: includes check if we have the previous block of the internal
 	<span class="hljs-keyword">if</span> (block.transactions.length &gt; constants.maxTxsPerBlock) {
 		result.errors.push(<span class="hljs-string">'Transactions length is too high'</span>);
 	}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-59">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>Checking if transactions of the block adds up to block values.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> totalAmount = <span class="hljs-number">0</span>,
 	    totalFee = <span class="hljs-number">0</span>,
 			size = <span class="hljs-number">0</span>,
@@ -2002,86 +2002,86 @@ checkPreviousBlock: includes check if we have the previous block of the internal
 	result.verified = result.errors.length === <span class="hljs-number">0</span>;
 	<span class="hljs-keyword">return</span> result;
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-60">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>Apply the block, provided it has been verified.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.applyBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, cb</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-61">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>Prevent shutdown during database writes.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>	__private.noShutdownRequired = <span class="hljs-literal">true</span>;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-62">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>Transactions to rewind in case of error.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> appliedUnconfirmedTransactions = {}, appliedTransactions = {};</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-63">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <p>List of currrently unconfirmed transactions that have been popped and unconfirmed transactions from the block already present in the node</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> removedTransactionsIds, keptTransactions;
 
 
 	<span class="hljs-keyword">async</span>.series({</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-64">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
@@ -2090,29 +2090,29 @@ TODO: It should be possible to remove this call if we can guarantee that only th
 TODO: Other possibility, when we rebuild from block chain this action should be moved out of the rebuild function.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		undoUnconfirmedList: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">seriesCb</span>) </span>{
 			modules.transactionPool.undoUnconfirmedList(block.transactions, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, removedTransactionsIds, alreadyUnconfirmedTransactionIds</span>) </span>{
 				<span class="hljs-keyword">if</span> (err) {
 					<span class="hljs-keyword">return</span> seriesCb(err);
 				} <span class="hljs-keyword">else</span> {
 					removedTransactionsIds = removedTransactionsIds;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-65">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>filter out tx that have been already applied as unconfirmed, or applied in a previous block</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>					keptTransactions = block.transactions.filter(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tx</span>)</span>{
 						<span class="hljs-keyword">return</span> alreadyUnconfirmedTransactionIds.indexOf(tx.id) == <span class="hljs-number">-1</span> &amp;&amp; !tx.applied;
 					});
@@ -2120,22 +2120,22 @@ TODO: Other possibility, when we rebuild from block chain this action should be 
 				}
 			});
 		},</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-66">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <p>Apply transactions to unconfirmed mem_accounts fields.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		applyUnconfirmed: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">seriesCb</span>) </span>{
 			<span class="hljs-keyword">async</span>.eachSeries(keptTransactions, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">transaction, eachSeriesCb</span>) </span>{
 				modules.transactions.applyUnconfirmed(transaction, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
@@ -2152,15 +2152,15 @@ TODO: Other possibility, when we rebuild from block chain this action should be 
 				});
 			}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
 				<span class="hljs-keyword">if</span> (err) {</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-67">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
@@ -2168,41 +2168,41 @@ TODO: Other possibility, when we rebuild from block chain this action should be 
 Leaves the database state as per the previous block.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">async</span>.eachSeries(keptTransactions, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">transaction, eachSeriesCb</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-68">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>The transaction has been applied?</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (appliedUnconfirmedTransactions[transaction.id]) {</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-69">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
               <p>DATABASE: write</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>							modules.transactions.undoUnconfirmed(transaction, eachSeriesCb);
 						} <span class="hljs-keyword">else</span> {
 							<span class="hljs-keyword">return</span> eachSeriesCb();
@@ -2215,15 +2215,15 @@ Leaves the database state as per the previous block.</p>
 				}
 			});
 		},</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-70">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
@@ -2231,25 +2231,25 @@ Leaves the database state as per the previous block.</p>
 Apply transactions to confirmed mem_accounts fields.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		applyConfirmed: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">seriesCb</span>) </span>{
 			<span class="hljs-keyword">async</span>.eachSeries(block.transactions, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">transaction, eachSeriesCb</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-71">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
               <p>DATABASE: write</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>				modules.transactions.apply(transaction, block, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
 					<span class="hljs-keyword">if</span> (err) {
 						err = [<span class="hljs-string">'Failed to apply transaction:'</span>, transaction.id, <span class="hljs-string">'-'</span>, err].join(<span class="hljs-string">' '</span>);
@@ -2258,61 +2258,61 @@ Apply transactions to confirmed mem_accounts fields.</p>
 						<span class="hljs-keyword">return</span> eachSeriesCb(err);
 					}
 					appliedTransactions[transaction.id] = transaction;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-72">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p>Transaction applied, removed from the unconfirmed list.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>					modules.transactionPool.removeUnconfirmedTransaction(transaction.id);
 					<span class="hljs-keyword">return</span> eachSeriesCb();
 				});
 			}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
 				<span class="hljs-keyword">if</span>(err){
 					<span class="hljs-keyword">async</span>.eachSeries(block.transactions, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">transaction, eachSeriesCb</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-73">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
               <p>The transaction has been applied?</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (appliedTransactions[transaction.id]) {</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-74">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
               <p>DATABASE: write</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>							modules.transactions.undo(transaction, block, eachSeriesCb);
 						} <span class="hljs-keyword">else</span> {
 							<span class="hljs-keyword">return</span> eachSeriesCb();
@@ -2327,32 +2327,32 @@ Apply transactions to confirmed mem_accounts fields.</p>
 			});
 		}
 	}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-75">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p>Allow shutdown, database writes are finished.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		__private.noShutdownRequired = <span class="hljs-literal">false</span>;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-76">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
@@ -2360,21 +2360,21 @@ Apply transactions to confirmed mem_accounts fields.</p>
 Prevents memory leak during synchronisation.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		keptTransactions = appliedTransactions = appliedUnconfirmedTransactions = removedTransactionsIds = block = <span class="hljs-literal">null</span>;
 
 		<span class="hljs-keyword">return</span> cb(err);
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-77">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
@@ -2382,7 +2382,7 @@ Prevents memory leak during synchronisation.</p>
 Shortcuting the unconfirmed/confirmed states.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>__private.applyGenesisBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, cb</span>) </span>{
 	block.transactions = block.transactions.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">a, b</span>) </span>{
 		<span class="hljs-keyword">if</span> (a.type === transactionTypes.VOTE) {
@@ -2404,22 +2404,22 @@ Shortcuting the unconfirmed/confirmed states.</p>
 			});
 	}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
 		<span class="hljs-keyword">if</span> (err) {</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-78">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
               <p>If genesis block is invalid, kill the node…</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>			library.logger.fatal(<span class="hljs-string">"Can't validate load genesis block"</span>);
 			library.logger.fatal(<span class="hljs-string">"Error"</span>, err);
 			<span class="hljs-keyword">return</span> process.exit(<span class="hljs-number">0</span>);
@@ -2428,15 +2428,15 @@ Shortcuting the unconfirmed/confirmed states.</p>
 		}
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-79">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
@@ -2448,49 +2448,49 @@ Shortcuting the unconfirmed/confirmed states.</p>
 <p><strong>API</strong> <code>processBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-80">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.processBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, cb</span>) </span>{
 	<span class="hljs-keyword">if</span> (__private.cleanup) {
 		<span class="hljs-keyword">return</span> cb(<span class="hljs-string">'Cleaning up'</span>);
 	}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-81">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
               <p>be sure to apply only one block after the other</p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-82">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
@@ -2499,20 +2499,20 @@ TODO: In case of hash-collision, to me it would be a special autofork…
 DATABASE: read only</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		library.db.query(sql.getBlockId, { <span class="hljs-attr">id</span>: block.id }).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">rows</span>) </span>{
 			<span class="hljs-keyword">if</span> (rows.length &gt; <span class="hljs-number">0</span>) {
 				<span class="hljs-keyword">return</span> cb([<span class="hljs-string">'Block'</span>, block.id, <span class="hljs-string">'already exists'</span>].join(<span class="hljs-string">' '</span>));
 			}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-83">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
@@ -2520,57 +2520,57 @@ DATABASE: read only</p>
 DATABASE: Read only to mem_accounts to extract active delegate list</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>			modules.delegates.validateBlockSlot(block, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
 				<span class="hljs-keyword">if</span> (err) {
 					library.bus.message(<span class="hljs-string">"fork"</span>, block, <span class="hljs-number">3</span>);
 					<span class="hljs-keyword">return</span> cb(err);
 				}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-84">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
               <p>Check against the mem_* tables that we can perform the transactions included in the block.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">async</span>.eachSeries(block.transactions, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">transaction, cb</span>) </span>{
 					<span class="hljs-keyword">async</span>.waterfall([
 						<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">waterfallCb</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-85">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
               <p>Removed LOC because it makes no sense</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>							transaction.blockId = block.id;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-86">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
@@ -2579,38 +2579,38 @@ TODO: Uncle forging: Double inclusion is allowed.
 DATABASE: read only</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>
 							library.db.query(sql.getTransactionId, { <span class="hljs-attr">id</span>: transaction.id }).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">rows</span>) </span>{
 								<span class="hljs-keyword">if</span> (rows.length &gt; <span class="hljs-number">0</span>) {
 									library.bus.message(<span class="hljs-string">"fork"</span>,block, <span class="hljs-number">0</span>);</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-87">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
               <p>we just don’t process tx</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>									<span class="hljs-keyword">return</span> waterfallCb(<span class="hljs-string">"Transaction already applied"</span>);
 								}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-88">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
@@ -2618,7 +2618,7 @@ DATABASE: read only</p>
 DATABASE: read only</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>								modules.accounts.getAccount({<span class="hljs-attr">publicKey</span>: transaction.senderPublicKey}, cb);
 							}).catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
 								library.logger.error(<span class="hljs-string">"stack"</span>, err.stack);
@@ -2626,15 +2626,15 @@ DATABASE: read only</p>
 							});
 						},
 						<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">sender, waterfallCb</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-89">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
@@ -2642,28 +2642,28 @@ DATABASE: read only</p>
 DATABASE: read only</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>
 							<span class="hljs-keyword">if</span>(block.height!=<span class="hljs-number">1</span>){
 								library.logic.transaction.verify(transaction, sender, waterfallCb);
 							}
 							<span class="hljs-keyword">else</span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-90">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
               <p>Don’t verify transaction in Genesis block</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>								<span class="hljs-keyword">return</span> waterfallCb();
 							}
 						}
@@ -2676,15 +2676,15 @@ DATABASE: read only</p>
 					<span class="hljs-keyword">if</span> (err) {
 						<span class="hljs-keyword">return</span> cb(err);
 					} <span class="hljs-keyword">else</span> {</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-91">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
@@ -2696,7 +2696,7 @@ We thus update the database with the transactions values, save the block and tic
 </ul>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">async</span>.waterfall([
 							<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">waterfallCb</span>)</span>{
 								__private.applyBlock(block, waterfallCb);
@@ -2720,36 +2720,36 @@ We thus update the database with the transactions values, save the block and tic
 			});
 		});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-92">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
               <p><strong>API</strong> <code>processEmptyBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-93">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.processEmptyBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, cb</span>) </span>{
 	<span class="hljs-keyword">if</span> (__private.cleanup) {
 		<span class="hljs-keyword">return</span> cb(<span class="hljs-string">'Cleaning up'</span>);
@@ -2782,36 +2782,36 @@ We thus update the database with the transactions values, save the block and tic
 	});
 
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-94">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
               <p><strong>API</strong> <code>simpleDeleteAfterBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-95">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.simpleDeleteAfterBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">blockId, cb</span>) </span>{
 	library.db.query(sql.simpleDeleteAfterBlock, {<span class="hljs-attr">id</span>: blockId}).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">res</span>) </span>{
 		<span class="hljs-keyword">return</span> cb(<span class="hljs-literal">null</span>, res);
@@ -2820,57 +2820,57 @@ We thus update the database with the transactions values, save the block and tic
 		<span class="hljs-keyword">return</span> cb(<span class="hljs-string">'Blocks#simpleDeleteAfterBlock error'</span>);
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-96">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-96">&#182;</a>
               </div>
               <p><strong>API</strong> <code>loadBlocksFromPeer</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-97">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-97">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.loadBlocksFromPeer = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">peer, cb</span>) </span>{
 	<span class="hljs-keyword">var</span> lastValidBlock = modules.blockchain.getLastBlock();
 
 	peer = modules.peers.inspect(peer);
 	library.logger.info(<span class="hljs-string">'Loading blocks from: '</span> + peer.string);</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-98">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-98">&#182;</a>
               </div>
               <p>we increase timeout as it can be a big payload</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>	modules.transport.getFromPeer(peer, {
 		<span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,
 		<span class="hljs-attr">api</span>: <span class="hljs-string">'/blocks?lastBlockHeight='</span> + lastValidBlock.height,
@@ -2880,22 +2880,22 @@ We thus update the database with the transactions values, save the block and tic
 			<span class="hljs-keyword">return</span> cb(err, lastValidBlock);
 		}
 		<span class="hljs-keyword">var</span> blocks = res.body.blocks;</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-99">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-99">&#182;</a>
               </div>
               <p>update with last version of peer data (height, blockheader)</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(res.peer){
 			peer=res.peer;
 		}
@@ -2910,36 +2910,36 @@ We thus update the database with the transactions values, save the block and tic
 		<span class="hljs-keyword">return</span> library.bus.message(<span class="hljs-string">"blocksReceived"</span>, blocks, peer, cb);
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-100">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-100">&#182;</a>
               </div>
               <p><strong>API</strong> <code>deleteBlocksBefore</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-101">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-101">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.deleteBlocksBefore = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, cb</span>) </span>{
 	<span class="hljs-keyword">var</span> blocks = [];
 
@@ -2960,57 +2960,57 @@ We thus update the database with the transactions values, save the block and tic
 			});
 		},
 		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-102">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-102">&#182;</a>
               </div>
               <p>reset the last receipt and try to rebuild now</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>			self.lastReceipt(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());
 			<span class="hljs-keyword">return</span> cb(err, blocks);
 		}
 	);
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-103">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-103">&#182;</a>
               </div>
               <p><strong>API</strong> <code>generateBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-104">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-104">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.generateBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">keypair, timestamp, cb</span>) </span>{
 
 	<span class="hljs-keyword">var</span> transactions = modules.transactionPool.getUnconfirmedTransactionList(<span class="hljs-literal">false</span>, constants.maxTxsPerBlock);
@@ -3022,15 +3022,15 @@ We thus update the database with the transactions values, save the block and tic
 			library.logger.debug(<span class="hljs-string">'no tx!!!'</span>);
 			<span class="hljs-keyword">return</span> cb();
 		}</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-105">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-105">&#182;</a>
               </div>
@@ -3038,7 +3038,7 @@ We thus update the database with the transactions values, save the block and tic
 TODO: to remove.</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		library.db.query(sql.getTransactionId, { <span class="hljs-attr">id</span>: transaction.id }).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">rows</span>) </span>{
 			<span class="hljs-keyword">if</span> (rows.length &gt; <span class="hljs-number">0</span>) {
 				modules.transactionPool.removeUnconfirmedTransaction(transaction.id);
@@ -3063,15 +3063,15 @@ TODO: to remove.</p>
 	}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 		<span class="hljs-keyword">var</span> block;
 		<span class="hljs-keyword">var</span> lastBlock = modules.blockchain.getLastBlock();</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-106">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-106">&#182;</a>
               </div>
@@ -3080,7 +3080,7 @@ could have been calculated BEFORE the lastBlock received.
 imagine the disaster…</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(timestamp &lt;= lastBlock.timestamp){
 			<span class="hljs-keyword">return</span> cb(<span class="hljs-string">"New block received while forging. Forging canceled"</span>);
 		}
@@ -3100,15 +3100,15 @@ imagine the disaster…</p>
 		<span class="hljs-keyword">return</span> cb(<span class="hljs-literal">null</span>, block);
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-107">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-107">&#182;</a>
               </div>
@@ -3116,21 +3116,21 @@ imagine the disaster…</p>
 <p><strong>EVENT</strong> <code>onProcessBlock</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-108">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-108">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.onProcessBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">block, cb</span>) </span>{
 	library.blockSequence.add(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">seriesCb</span>)</span>{
 		<span class="hljs-keyword">if</span>(block.numberOfTransactions == <span class="hljs-number">0</span>){
@@ -3142,102 +3142,102 @@ imagine the disaster…</p>
 		}
 	}, cb);
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-109">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-109">&#182;</a>
               </div>
               <p><strong>EVENT</strong> <code>onBind</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-110">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-110">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.onBind = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">scope</span>) </span>{
 	modules = scope;
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-111">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-111">&#182;</a>
               </div>
               <p><strong>EVENT</strong> <code>onAttachPublicApi</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-112">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.onAttachPublicApi = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
  	__private.attachApi();
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-113">
-          
+
             <div class="fullblock">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-113">&#182;</a>
               </div>
               <p><strong>API</strong> <code>cleanup</code></p>
 
             </div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-114">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-114">&#182;</a>
               </div>
-              
+
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>Blocks.prototype.cleanup = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cb</span>) </span>{
 	__private.cleanup = <span class="hljs-literal">true</span>;
 
@@ -3256,22 +3256,22 @@ imagine the disaster…</p>
 		});
 	}
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-115">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-115">&#182;</a>
               </div>
               <p>Shared public API</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre>shared.getBlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">req, cb</span>) </span>{
 
 	library.schema.validate(req.body, schema.getBlock, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
@@ -3360,26 +3360,26 @@ shared.getStatus = <span class="hljs-function"><span class="hljs-keyword">functi
 		<span class="hljs-attr">supply</span>:    __private.blockReward.calcSupply(block.height)
 	});
 };</pre></div></div>
-            
+
         </li>
-        
-        
+
+
         <li id="section-116">
-          
+
             <div class="annotation">
-          
-              
+
+
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-116">&#182;</a>
               </div>
               <p>Export</p>
 
             </div>
-            
+
             <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = Blocks;</pre></div></div>
-            
+
         </li>
-        
+
     </ul>
   </div>
 </body>

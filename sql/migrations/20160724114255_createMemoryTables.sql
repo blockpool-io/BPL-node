@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS "mem_accounts"(
   "secondSignature" SMALLINT DEFAULT 0,
   "u_secondSignature" SMALLINT DEFAULT 0,
   "u_username" VARCHAR(20),
-  "address" VARCHAR(36) NOT NULL UNIQUE PRIMARY KEY,
+  "address" VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
   "publicKey" BYTEA,
   "secondPublicKey" BYTEA,
   "balance" NUMERIC(30,10) DEFAULT 0,
@@ -47,25 +47,25 @@ CREATE TABLE IF NOT EXISTS "mem_delegates"(
 );
 
 CREATE TABLE IF NOT EXISTS "mem_accounts2delegates"(
-  "accountId" VARCHAR(36) NOT NULL,
+  "accountId" VARCHAR(50) NOT NULL,
   "dependentId" VARCHAR(66) NOT NULL,
   FOREIGN KEY ("accountId") REFERENCES mem_accounts("address") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "mem_accounts2u_delegates"(
-  "accountId" VARCHAR(36) NOT NULL,
+  "accountId" VARCHAR(50) NOT NULL,
   "dependentId" VARCHAR(66) NOT NULL,
   FOREIGN KEY ("accountId") REFERENCES mem_accounts("address") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "mem_accounts2multisignatures"(
-  "accountId" VARCHAR(36) NOT NULL,
+  "accountId" VARCHAR(50) NOT NULL,
   "dependentId" VARCHAR(66) NOT NULL,
   FOREIGN KEY ("accountId") REFERENCES mem_accounts("address") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "mem_accounts2u_multisignatures"(
-  "accountId" VARCHAR(36) NOT NULL,
+  "accountId" VARCHAR(50) NOT NULL,
   "dependentId" VARCHAR(66) NOT NULL,
   FOREIGN KEY ("accountId") REFERENCES mem_accounts("address") ON DELETE CASCADE
 );

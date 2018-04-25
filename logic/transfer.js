@@ -1,6 +1,6 @@
 'use strict';
 
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 
 // Private fields
 var modules, library;
@@ -42,7 +42,7 @@ Transfer.prototype.calculateFee = function (trs) {
 
 //
 Transfer.prototype.verify = function (trs, sender, cb) {
-	var isAddress = /^[1-9A-Za-z]{1,35}$/g;
+	var isAddress = /^[1-9A-Za-z_]{1,45}$/g;
 	if (!trs.recipientId || !isAddress.test(trs.recipientId)) {
 		return cb('Invalid recipient');
 	}

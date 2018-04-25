@@ -1,6 +1,8 @@
 'use strict';
 
 var os = require('os');
+const PublicIp = require('public-ip');
+var Router = require('../helpers/router.js');
 
 // Private fields
 var modules, library, self, __private = {}, shared = {};
@@ -19,6 +21,29 @@ function System (cb, scope) {
 }
 
 // Private methods
+__private.attachApi = function () {
+	var router = new Router();
+
+	router.use(function (req, res, next) {
+		if (modules) { return next(); }
+		res.status(500).send({success: false, error: 'Blockchain is loading'});
+	});
+
+	router.map(shared, {
+		'get /getPublicIp': 'getPublicIp'
+	});
+
+	router.use(function (req, res, next) {
+		res.status(500).send({success: false, error: 'API endpoint not found'});
+	});
+
+	library.network.app.use('/api/system', router);
+	library.network.app.use(function (err, req, res, next) {
+		if (!err) { return next(); }
+		library.logger.error('API error ' + req.url, err);
+		res.status(500).send({success: false, error: 'API error: ' + err.message});
+	});
+};
 
 // Public methods
 //
@@ -76,6 +101,19 @@ System.prototype.isMyself = function (peer) {
 }
 
 // Shared
+shared.getPublicIp = function (req, cb) {
+	PublicIp.v4().then(ip => {
+    	return cb(null, {publicIp: ip});
+	});
+};
+
+//
+//__EVENT__ `onAttachPublicApi`
+
+//
+System.prototype.onAttachPublicApi = function () {
+ 	__private.attachApi();
+};
 
 // Export
 module.exports = System;
