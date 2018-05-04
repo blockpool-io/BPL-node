@@ -1,17 +1,17 @@
 {
-  "port": 4000,
+  "port": 9032,
   "address": "0.0.0.0",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "fileLogLevel": "info",
-  "logFileName": "logs/bpl.log",
+  "logFileName": "logs/wbx.log",
   "consoleLogLevel": "debug",
   "trustProxy": false,
   "db": {
     "host": "localhost",
     "port": 5432,
-    "database": "dbName",
-    "user": "dbUser",
-    "password": "dbPassword",
+    "database": "wbx_mainnet",
+    "user": "ubuntu",
+    "password": "93124n56rtmc",
     "poolSize": 20,
     "poolIdleTimeout": 30000,
     "reapIntervalMillis": 1000,
@@ -37,8 +37,44 @@
     "minimumNetworkReach": 1,
     "list": [
       {
-        "ip": "0.0.0.0",
-        "port": 4000
+        "ip": "wbx01.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx02.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx03.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx04.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx05.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx06.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx07.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx08.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx09.woooba.com",
+        "port": 9032
+      },
+      {
+        "ip": "wbx10.woooba.com",
+        "port": 9032
       }
     ],
     "blackList": [],
@@ -72,10 +108,10 @@
     "options": {
       "port": 443,
       "address": "0.0.0.0",
-      "key": "./ssl/bpl.key",
-      "cert": "./ssl/bpl.crt"
+      "key": "./ssl/wbx.key",
+      "cert": "./ssl/wbx.crt"
     }
   },
-  "network": "BPL-devnet",
-  "nethash": "1a418de02c68c4353d932a9568be28be20b7b9a86fcf9b653482b4f3f42a6302"
+  "network": "WBX-mainnet",
+  "nethash": "027bf2baf491a449ef4c2980c0f7d208a37776f7054945ed453523b5ef5427ec"
 }

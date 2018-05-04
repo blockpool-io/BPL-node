@@ -1,9 +1,11 @@
 'use strict';
 
 var ip = require('ip');
-var bs58check = require('bs58check');
+var constants = require('../constants.json');
+var isDomainName = require('is-domain-name');
+var bpljs = require('bpljs');
 
-function schema(network){
+function schema(network) {
   this.z_schema = require('z-schema');
 
   this.z_schema.registerFormat('hex', function (str) {
@@ -35,12 +37,12 @@ function schema(network){
     }
 
     var version = network.pubKeyHash;
-  	try {
-  		var decode = bs58check.decode(str);
-  		return decode[0] == version;
-  	} catch(e){
-  		return false;
-  	}
+    try {
+        var decode = bpljs.customAddress.bs58checkDecode(str);
+        return decode[0] == version;
+    } catch (e) {
+      return false;
+    }
   });
 
 
@@ -90,7 +92,7 @@ function schema(network){
   });
 
   this.z_schema.registerFormat('delegatesList', function (obj) {
-    obj.limit = 201;
+    obj.limit = constants.activeDelegates;
     return true;
   });
 
@@ -105,7 +107,12 @@ function schema(network){
   });
 
   this.z_schema.registerFormat('ip', function (str) {
-    return ip.isV4Format(str);
+    if (ip.isV4Format(str) == true || ip.isV6Format(str) == true || isDomainName(str) == true) {
+      return true
+    }
+    else {
+      return false
+    }
   });
 }
 

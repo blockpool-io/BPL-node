@@ -49,7 +49,6 @@ var RoundsSql = {
   updateTotalVotes: 'UPDATE mem_accounts m SET vote = (SELECT COALESCE(SUM(b.balance), 0) as vote FROM mem_accounts2delegates a, mem_accounts b where a."accountId" = b.address AND a."dependentId" = encode(m."publicKey", \'hex\')) WHERE m."isDelegate" = 1;',
 
   updateBlockId: 'UPDATE mem_accounts SET "blockId" = ${newId} WHERE "blockId" = ${oldId};'
-
 };
 
 module.exports = RoundsSql;

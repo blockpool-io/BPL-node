@@ -4,7 +4,7 @@ var chai = require('chai');
 var expect = require('chai').expect;
 
 var BlockReward = require('../../../logic/blockReward.js');
-var constants = require('../../../helpers/constants.js');
+var constants = require('../../../constants.json');
 
 constants.rewards.distance = 3000000;
 constants.rewards.offset = 1451520;

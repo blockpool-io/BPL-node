@@ -1,16 +1,16 @@
 {
-  "port": 4000,
+  "port": 9032,
   "address": "0.0.0.0",
   "version": "0.3.0",
   "fileLogLevel": "info",
-  "logFileName": "logs/bpl.log",
+  "logFileName": "logs/wbx.log",
   "consoleLogLevel": "debug",
   "trustProxy": false,
   "db": {
     "host": "localhost",
     "port": 5432,
-    "database": "dbName",
-    "user": "userName",
+    "database": "wbx_testnet",
+    "user": null,
     "password": "password",
     "poolSize": 20,
     "poolIdleTimeout": 30000,
@@ -36,53 +36,45 @@
   "peers": {
     "minimumNetworkReach": 1,
     "list": [
-      {
-        "ip": "13.113.195.102",
-        "port": 4000
+     {
+        "ip": "lon-01.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "54.250.157.118",
-        "port": 4000
+        "ip": "lon-02.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "54.250.145.100",
-        "port": 4000
+        "ip": "lon-03.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "13.115.247.36",
-        "port": 4000
+        "ip": "lon-04.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "54.238.196.5",
-        "port": 4000
+        "ip": "lon-05.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "54.238.255.226",
-        "port": 4000
+        "ip": "lon-06.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "54.249.117.29",
-        "port": 4000
+        "ip": "lon-07.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "54.199.210.80",
-        "port": 4000
+        "ip": "lon-08.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "54.238.155.152",
-        "port": 4000
+        "ip": "lon-09.wbx.woooba.com",
+        "port": 9032
       },
       {
-        "ip": "13.113.195.102",
-        "port": 4000
-      },
-      {
-        "ip": "13.114.30.146",
-        "port": 4000
-      },
-      {
-        "ip": "54.249.68.34",
-        "port": 4000
+        "ip": "lon-10.wbx.woooba.com",
+        "port": 9032
       }
     ],
     "blackList": [],
@@ -100,7 +92,8 @@
   "forging": {
     "coldstart": 6,
     "force": true,
-    "secret": [],
+    "secret": [
+    ],
     "access": {
       "whiteList": [
         "127.0.0.1"
@@ -116,10 +109,11 @@
     "options": {
       "port": 443,
       "address": "0.0.0.0",
-      "key": "./ssl/bpl.key",
-      "cert": "./ssl/bpl.crt"
+      "key": "./ssl/wbx.key",
+      "cert": "./ssl/wbx.crt"
     }
   },
-  "network": "BPL-devnet",
-  "nethash": "022293302aa4c24a98f1007645afe2d8b98f34e2c6fbf367c78d0bd389c6264f"
+  "network": "WBX-testnet",
+  "tokenShortName": "WBX",
+  "nethash": "dbb912a604b286bbe2b17e4936b0f71b8cdb1d7dc4660e28118a5ed1700222f8"
 }

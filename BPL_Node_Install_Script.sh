@@ -3,13 +3,13 @@
 
 GIT_CLONE_PATH=https://github.com/blockpool-io/BPL-node.git
 
-#Basic installations 
+#Basic installations
 #install NTP
 sudo apt-get install git
 sudo apt-get install -y ntp
 sudo service ntp restart
 rm -rf BPL-node
-#Clones the repository 
+#Clones the repository
 echo -e "Clonning the repository $GIT_CLONE_PATH\n"
 git clone $GIT_CLONE_PATH
 #Change directory to BPL-node
@@ -18,7 +18,7 @@ cd BPL-node
 
 echo -e "Switched branch"
 #Change the git branch
-git checkout bpl-mainnet
+git checkout wbx
 
 #Install it to avoid error
 echo -e "Avoiding future errors by installing libpq-dev\n"
@@ -39,7 +39,7 @@ echo -e "Install Node.js (tested with version 6.9.2, but any recent LTS release 
 sudo apt-get install -y nodejs
 sudo npm install -g n
 sudo n 6.9.2
-npm install forever -g
+sudo npm install forever -g
 #Install grunt-cli (globally):
 echo -e "#Install grunt-cli (globally):\n"
 sudo npm install grunt-cli -g
@@ -49,12 +49,11 @@ npm install libpq secp256k1
 npm install
 sudo apt-get install -y postgresql postgresql-contrib
 sudo -u postgres createuser -P --createdb $USER
-dropdb bpl_mainnet
-createdb bpl_mainnet  "this should match with the database name from config file"
-forever start app.js -c config.mainnet.json -g genesisBlock.mainnet.json
+dropdb wbx_mainnet
+createdb wbx_mainnet  "this should match with the database name from config file"
+forever start app.js -c config.wbx.mainnet.json -g genesisBlock.wbx.mainnet.json
 #wait for chain to sync
 sleep 10m
-forever stop app.js -c config.mainnet.json -g genesisBlock.mainnet.json
+forever stop app.js -c config.wbx.mainnet.json -g genesisBlock.wbx.mainnet.json
 read please update your delegate secret and press enter when finished.
-forever start app.js -c config.mainnet.json -g genesisBlock.mainnet.json
-
+forever start app.js -c config.wbx.mainnet.json -g genesisBlock.wbx.mainnet.json

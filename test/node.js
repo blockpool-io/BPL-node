@@ -10,7 +10,7 @@ node.bpl.crypto.setNetworkVersion(network.pubKeyHash);
 // Requires
 node.bignum = require('../helpers/bignum.js');
 node.config = require('./config.json');
-node.constants = require('../helpers/constants.js');
+node.constants = require('../constants.json');
 node.txTypes = require('../helpers/transactionTypes.js');
 node.delegates = require('./delegatesPassphrases.'+networkName+'.json');
 node.gAccount = require('./genesisPassphrase.'+networkName+'.json');

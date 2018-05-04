@@ -1,5 +1,6 @@
 'use strict';
 
+var constants = require('../constants.json');
 var bpljs = require('bpljs');
 
 function Crypto(scope){

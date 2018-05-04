@@ -1,7 +1,7 @@
 'use strict';
 
 var async = require('async');
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 var crypto = require('crypto');
 var MilestoneBlocks = require('../helpers/milestoneBlocks.js');
 var Router = require('../helpers/router.js');

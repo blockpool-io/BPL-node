@@ -2,7 +2,7 @@
 
 var async = require('async');
 var ByteBuffer = require('bytebuffer');
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 var Diff = require('../helpers/diff.js');
 
 // Private fields

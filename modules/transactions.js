@@ -2,7 +2,7 @@
 
 var async = require('async');
 var ByteBuffer = require('bytebuffer');
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 var crypto = require('crypto');
 var extend = require('extend');
 var genesisblock = null;

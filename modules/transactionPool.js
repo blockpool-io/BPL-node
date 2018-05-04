@@ -1,7 +1,7 @@
 'use strict';
 
 var async = require('async');
-var constants = require('../helpers/constants.js');
+var constants = require('../constants.json');
 var transactionTypes = require('../helpers/transactionTypes.js');
 var slots = require('../helpers/slots.js');
 
@@ -485,7 +485,7 @@ TransactionPool.prototype.cleanup = function (cb) {
 			library.logger.error('Error cleaning TransactionPool', err);
 		}
 		else{
-			library.logger.info('Cleaned TransactionPool. Unconfirmed transations undone: ' + removedIds.length);
+			library.logger.info('Cleaned TransactionPool. Unconfirmed transactions undone: ' + removedIds.length);
 		}
 		return cb();
 	});

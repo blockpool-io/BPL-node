@@ -7,7 +7,6 @@ var checkIpInList = require('./helpers/checkIpInList.js');
 var extend = require('extend');
 var fs = require('fs');
 var genesisblock = require('./genesisBlock.json');
-var bpljs = require('bpljs');
 var https = require('https');
 var Logger = require('./logger.js');
 var packageJson = require('./package.json');
@@ -19,9 +18,13 @@ var z_schema = require('./helpers/z_schema.js');
 var colors = require('colors');
 var vorpal = require('vorpal')();
 var spawn = require('child_process').spawn;
+var constants = require('./constants.json');
+var networks = require('./networks.json');
+var bpljs = require('bpljs');
+process.env.CONFIG_NAME = "./config.json";
+process.env.GENESIS_NAME = "./genesisBlock.json";
 
 process.stdin.resume();
-
 var versionBuild = fs.readFileSync(path.join(__dirname, 'build'), 'utf8');
 
 program
@@ -38,10 +41,12 @@ program
 
 if (program.config) {
 	appConfig = require(path.resolve(process.cwd(), program.config));
+	process.env.CONFIG_NAME = program.config;
 }
 
 if (program.genesis) {
 	genesisblock = require(path.resolve(process.cwd(), program.genesis));
+	process.env.GENESIS_NAME = program.genesis;
 }
 
 if (program.networks) {
@@ -124,27 +129,37 @@ d.on('error', function (err) {
 
 d.run(function () {
 	var modules = [];
-	console.log(colors.cyan("\n\
-BPL BPL BPL BPL BPL          BPL BPL BPL BPL BPL          BPL BPL\n\
-BPL BPL BPL BPL BPL BPL      BPL BPL BPL BPL BPL BPL      BPL BPL\n\
-BPL BPL           BPL BPL    BPL BPL           BPL BPL    BPL BPL\n\
-BPL BPL            BPL BPL   BPL BPL            BPL BPL   BPL BPL\n\
-BPL BPL             BPL BPL  BPL BPL             BPL BPL  BPL BPL\n\
-BPL BPL             BPL BPL  BPL BPL             BPL BPL  BPL BPL\n\
-BPL BPL          BPL BPL     BPL BPL          BPL BPL     BPL BPL\n\
-BPL BPL BPL BPL BPL          BPL BPL BPL BPL BPL BPL      BPL BPL\n\
-BPL BPL BPL BPL BPL          BPL BPL BPL BPL BPL          BPL BPL\n\
-BPL BPL          BPL BPL     BPL BPL                      BPL BPL\n\
-BPL BPL             BPL BPL  BPL BPL                      BPL BPL\n\
-BPL BPL             BPL BPL  BPL BPL                      BPL BPL\n\
-BPL BPL            BPL BPL   BPL BPL                      BPL BPL\n\
-BPL BPL           BPL BPL    BPL BPL                      BPL BPL\n\
-BPL BPL BPL BPL BPL BPL      BPL BPL                      BPL BPL BPL BPL BPL BPL\n\
-BPL BPL BPL BPL BPL          BPL BPL                      BPL BPL BPL BPL BPL BPL\n\
-\n\n\
-	                     W E L C O M E  A B O A R D !\n\
-\n\
-"));
+	fs = require('fs')
+	let logoStr = "\n\
+	BPL BPL BPL BPL BPL          BPL BPL BPL BPL BPL          BPL BPL\n\
+	BPL BPL BPL BPL BPL BPL      BPL BPL BPL BPL BPL BPL      BPL BPL\n\
+	BPL BPL           BPL BPL    BPL BPL           BPL BPL    BPL BPL\n\
+	BPL BPL            BPL BPL   BPL BPL            BPL BPL   BPL BPL\n\
+	BPL BPL             BPL BPL  BPL BPL             BPL BPL  BPL BPL\n\
+	BPL BPL             BPL BPL  BPL BPL             BPL BPL  BPL BPL\n\
+	BPL BPL          BPL BPL     BPL BPL          BPL BPL     BPL BPL\n\
+	BPL BPL BPL BPL BPL          BPL BPL BPL BPL BPL BPL      BPL BPL\n\
+	BPL BPL BPL BPL BPL          BPL BPL BPL BPL BPL          BPL BPL\n\
+	BPL BPL          BPL BPL     BPL BPL                      BPL BPL\n\
+	BPL BPL             BPL BPL  BPL BPL                      BPL BPL\n\
+	BPL BPL             BPL BPL  BPL BPL                      BPL BPL\n\
+	BPL BPL            BPL BPL   BPL BPL                      BPL BPL\n\
+	BPL BPL           BPL BPL    BPL BPL                      BPL BPL\n\
+	BPL BPL BPL BPL BPL BPL      BPL BPL                      BPL BPL BPL BPL BPL BPL\n\
+	BPL BPL BPL BPL BPL          BPL BPL                      BPL BPL BPL BPL BPL BPL\n\
+	\n\n\
+		                     W E L C O M E  A B O A R D !\n\
+	\n\
+	";
+	fs.readFile('logo.txt', 'utf8', function (err,data) {
+	  if (err) {
+	    return console.log(err);
+	  }
+		logoStr = data;
+		console.log(colors.cyan(""+logoStr));
+	});
+
+
 	async.auto({
 		config: function (cb) {
 			try {
@@ -351,12 +366,11 @@ BPL BPL BPL BPL BPL          BPL BPL                      BPL BPL BPL BPL BPL BP
 			});
 
 			scope.network.server.listen(scope.config.port, scope.config.address, function (err) {
-				scope.logger.info('# BPL node server started on: ' + scope.config.address + ':' + scope.config.port);
-
+				scope.logger.info('# '+scope.config.network.client.tokenShortName+' node server started on: ' + scope.config.address + ':' + scope.config.port);
 				if (!err) {
 					if (scope.config.ssl.enabled) {
 						scope.network.https.listen(scope.config.ssl.options.port, scope.config.ssl.options.address, function (err) {
-							scope.logger.info('BPL https started: ' + scope.config.ssl.options.address + ':' + scope.config.ssl.options.port);
+							scope.logger.info(scope.config.network.client.tokenShortName+' https started: ' + scope.config.ssl.options.address + ':' + scope.config.ssl.options.port);
 
 							cb(err, scope.network);
 						});
@@ -424,14 +438,15 @@ BPL BPL BPL BPL BPL          BPL BPL                      BPL BPL BPL BPL BPL BP
 					cb(null, scope.schema);
 				},
 				genesisblock: function (cb) {
-					cb(null, {
-						block: genesisblock
-					});
+					cb(null, {block: genesisblock});
+				},
+				config: function (cb) {
+					cb(null, scope.config);
 				},
 				account: ['db', 'bus', 'crypto', 'schema', 'genesisblock', function (scope, cb) {
 					new Account(scope, cb);
 				}],
-				transaction: ['db', 'bus', 'crypto', 'schema', 'genesisblock', 'account', function (scope, cb) {
+				transaction: ['db', 'bus', 'crypto', 'schema', 'genesisblock', 'account', 'config', function (scope, cb) {
 					new Transaction(scope, cb);
 				}],
 				block: ['db', 'bus', 'crypto', 'schema', 'genesisblock', 'account', 'transaction', function (scope, cb) {
@@ -521,6 +536,13 @@ process.on('uncaughtException', function (err) {
 });
 
 function startInteractiveMode(scope){
+	bpljs = new bpljs.BplClass({
+		"delegates": constants.activeDelegates,
+		"epochTime": constants.epochTime,
+		"interval": constants.blocktime,
+		"network": scope.config.network
+	});
+
 	vorpal
 	  .command('rebuild', 'Rebuild node from scratch')
 	  .action(function(args, callback) {
@@ -613,8 +635,8 @@ function startInteractiveMode(scope){
 			var self = this;
 	    var passphrase = require("bip39").generateMnemonic();
 			self.log("Seed    - private:",passphrase);
-			self.log("WIF     - private:",require("bpljs").crypto.getKeys(passphrase).toWIF());
-			self.log("Address - public :",require("bpljs").crypto.getAddress(require("bpljs").crypto.getKeys(passphrase).publicKey));
+			self.log("WIF     - private:",bpljs.crypto.getKeys(passphrase).toWIF());
+			self.log("Address - public :",bpljs.crypto.getAddress(bpljs.crypto.getKeys(passphrase).publicKey));
 			callback();
 	  });
 	var account=null;

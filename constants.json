@@ -1,0 +1,53 @@
+{
+  "activeDelegates": 51,
+  "maximumVotes": 1,
+  "addressLength": 208,
+  "blockHeaderLength": 248,
+  "confirmationLength": 77,
+  "epochTime": "1970-01-01T00:00:00.000Z",
+  "fees": {
+    "send": 10000000,
+    "vote": 100000000,
+    "secondsignature": 500000000,
+    "delegate": 1000000000,
+    "multisignature": 500000000
+  },
+  "feeStart": 1,
+  "feeStartVolume": 1000000000000,
+  "fixedPoint": 1000000000,
+  "forgingTimeOut": 3060,
+  "maxAddressesLength": 26624,
+  "maxAmount": 100000000,
+  "maxClientConnections": 100,
+  "maxConfirmations": 7700,
+  "maxPayloadLength": 2097152,
+  "maxRequests": 120000,
+  "maxSignaturesLength": 50176,
+  "maxTxsPerBlock": 50,
+  "blocktime": 15,
+  "numberLength": 100000000,
+  "requestLength": 104,
+  "rewards": {
+    "type": "static",
+    "fixedLastReward": false,
+		"milestones": [
+			"1000000000",
+			"900000000",
+			"800000000",
+			"700000000",
+			"600000000",
+      "500000000",
+			"400000000",
+			"300000000",
+			"200000000"
+		],
+		"offset": 80640,   
+		"distance": 210240 
+  },
+  "signatureLength": 196,
+  "totalAmount": 10000000000000000,
+  "unconfirmedTransactionTimeOut": 10800,
+  "reliability": {
+    "rounds": 10
+  }
+}

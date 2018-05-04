@@ -157,5 +157,6 @@
     }
   },
   "network": "BPL-testnet",
-  "nethash": "f9b98b78d2012ba8fd75538e3569bbc071ce27f0f93414218bc34bc72bdeb3db"
+  "nethash": "f9b98b78d2012ba8fd75538e3569bbc071ce27f0f93414218bc34bc72bdeb3db",
+  "tokenShortName": "BPL"
 }
