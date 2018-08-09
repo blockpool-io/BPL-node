@@ -51,6 +51,7 @@ function Delegates (cb, scope) {
 	__private.assetTypes[transactionTypes.DELEGATE] = library.logic.transaction.attachAssetType(
 		transactionTypes.DELEGATE, new Delegate()
 	);
+
 	return cb(null, self);
 }
 
@@ -489,33 +490,6 @@ __private.loadMyDelegates = function (cb) {
 };
 
 
-Delegates.prototype.getAllDelegatesSortByWeighting = function(round, limit, cb) {
-	if(round < constants.reliability.triggerAtRound) {
-		modules.accounts.getAccounts({
-			isDelegate: 1,
-			sort: { 'vote': -1, 'publicKey': 1 }
-		}, ['username', 'address', 'publicKey', 'vote', 'missedblocks', 'producedblocks'], function (err, delegates) {
-			if (err) {
-				return cb(err);
-			}
-			return cb(null, delegates);
-		});
-	}
-	else {
-		let toRound = (round ? round : __private.current + 1);
-		let fromRound = (toRound > constants.reliability.roundCycle ? toRound - constants.reliability.roundCycle : 1);
-
-		library.db.query(sql.getAllDelegates, {fromRound: fromRound, toRound: toRound}).then(function (rows) {
-					let delegates = modules.rounds.sortDelegatesByWeighting(rows);
-					if(limit) {
-						delegates = rows.slice(0, limit);
-					}
-					return cb(null, delegates);
-			}).catch(function (err) {
-					return cb(err);
-			});
-	}
-}
 // Public methods
 //
 //__API__ `isAForgingDelegatesPublicKey`
@@ -535,61 +509,62 @@ Delegates.prototype.getDelegates = function (query, cb) {
 	if (!query) {
 		throw 'Missing query argument';
 	}
-
-	let round = modules.rounds.getCurrentRound();
-	self.getAllDelegatesSortByWeighting(round, null, function(err, delegates) {
-		if(err) {
+	modules.accounts.getAccounts({
+		isDelegate: 1,
+		sort: { 'vote': -1, 'publicKey': 1 }
+	}, ['username', 'address', 'publicKey', 'vote', 'missedblocks', 'producedblocks'], function (err, delegates) {
+		if (err) {
 			return cb(err);
 		}
-		else {
-			var limit = query.limit || constants.activeDelegates;
-			var offset = query.offset || 0;
-			var active = query.active;
 
-			limit = limit > constants.activeDelegates ? constants.activeDelegates : limit;
+		var limit = query.limit || constants.activeDelegates;
+		var offset = query.offset || 0;
+		var active = query.active;
 
-			var count = delegates.length;
-			var length = Math.min(limit, count);
-			var realLimit = Math.min(offset + limit, count);
+		limit = limit > constants.activeDelegates ? constants.activeDelegates : limit;
 
-			var lastBlock   = modules.blockchain.getLastBlock();
-			var totalSupply = 0;
+		var count = delegates.length;
+		var length = Math.min(limit, count);
+		var realLimit = Math.min(offset + limit, count);
 
-			//get total supply in the Blockchain
-			__private.blockReward.calcSupply(lastBlock.height, function(error, supply) {
-				if(!error) {
-					totalSupply = supply;
-				}
+		var lastBlock   = modules.blockchain.getLastBlock();
+		var totalSupply = 0;
 
-				for (var i = 0; i < delegates.length; i++) {
-					delegates[i].rate = i + 1;
-					delegates[i].approval = (delegates[i].vote / totalSupply) * 100;
-					delegates[i].approval = Math.round(delegates[i].approval * 1e2) / 1e2;
+		//get total supply in the Blockchain
+		__private.blockReward.calcSupply(lastBlock.height, function(error, supply) {
+			if(!error) {
+				totalSupply = supply;
+			}
 
-					var percent = 100 - (delegates[i].missedblocks / ((delegates[i].producedblocks + delegates[i].missedblocks) / 100));
-					percent = Math.abs(percent) || 0;
+			for (var i = 0; i < delegates.length; i++) {
+				delegates[i].rate = i + 1;
+				delegates[i].approval = (delegates[i].vote / totalSupply) * 100;
+				delegates[i].approval = Math.round(delegates[i].approval * 1e2) / 1e2;
 
-					var outsider = i + 1 > slots.delegates;
-					delegates[i].productivity = (!outsider) ? Math.round(percent * 1e2) / 1e2 : 0;
-				}
+				var percent = 100 - (delegates[i].missedblocks / ((delegates[i].producedblocks + delegates[i].missedblocks) / 100));
+				percent = Math.abs(percent) || 0;
 
-				var orderBy = OrderBy(query.orderBy, {quoteField: false});
+				var outsider = i + 1 > slots.delegates;
+				delegates[i].productivity = (!outsider) ? Math.round(percent * 1e2) / 1e2 : 0;
+			}
 
-				if (orderBy.error) {
-					return cb(orderBy.error);
-				}
+			var orderBy = OrderBy(query.orderBy, {quoteField: false});
 
-				return cb(null, {
-					delegates: delegates,
-					sortField: orderBy.sortField,
-					sortMethod: orderBy.sortMethod,
-					count: count,
-					offset: offset,
-					limit: realLimit
-				});
+			if (orderBy.error) {
+				return cb(orderBy.error);
+			}
+
+			return cb(null, {
+				delegates: delegates,
+				sortField: orderBy.sortField,
+				sortMethod: orderBy.sortMethod,
+				count: count,
+				offset: offset,
+				limit: realLimit
 			});
-		}
-	})
+
+		});
+	});
 };
 
 //

@@ -9,7 +9,7 @@ var path = require('path');
 var Router = require('../helpers/router.js');
 var Peer = require('../logic/peer.js');
 var schema = require('../schema/peers.js');
-
+var dns = require('dns')
 // Private fields
 var modules, library, self, shared = {};
 
@@ -224,8 +224,12 @@ Peers.prototype.listBroadcastPeers = function() {
 
 	var peers = Object.values(__private.peers);
 
+// dns.lookup('testwsserver', function(err, result) {
+//   console.log(result)
+// })
+
 	var list = peers.filter(function(peer){
-		return peer.status!="FORK" && !peer.liteclient;
+		return peer.status!="FORK";
 	});
 
 	return shuffle(list);

@@ -108,9 +108,9 @@ __private.list = function (filter, cb) {
 		params.offset = Math.abs(filter.offset);
 	}
 
-	if (params.limit > constants.maxTxsPerBlock) {
-		return cb('Invalid limit. Maximum is '+constants.maxTxsPerBlock);
-	}
+	// if (params.limit > constants.maxTxsPerBlock) {
+	// 	return cb('Invalid limit. Maximum is '+constants.maxTxsPerBlock);
+	// }
 
 	var orderBy = OrderBy(
 		filter.orderBy, {
@@ -343,7 +343,6 @@ shared.getTransactions = function (req, cb) {
 			if (err) {
 				return cb('Failed to get transactions: ' + err);
 			}
-
 			return cb(null, {transactions: data.transactions, count: data.count});
 		});
 	});
