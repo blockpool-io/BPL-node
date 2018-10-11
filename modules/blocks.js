@@ -210,32 +210,22 @@ __private.list = function (filter, cb) {
 		return cb(orderBy.error);
 	}
 
-	library.db.query(sql.countList({
-		where: where
+	library.db.query(sql.list({
+		where: where,
+		sortField: orderBy.sortField,
+		sortMethod: orderBy.sortMethod
 	}), params).then(function (rows) {
-		var count = rows[0].count;
+		var blocks = [];
 
-		library.db.query(sql.list({
-			where: where,
-			sortField: orderBy.sortField,
-			sortMethod: orderBy.sortMethod
-		}), params).then(function (rows) {
-			var blocks = [];
+		for (var i = 0; i < rows.length; i++) {
+			blocks.push(library.logic.block.dbRead(rows[i]));
+		}
 
-			for (var i = 0; i < rows.length; i++) {
-				blocks.push(library.logic.block.dbRead(rows[i]));
-			}
+		var data = {
+			blocks: blocks,
+		};
 
-			var data = {
-				blocks: blocks,
-				count: count
-			};
-
-			return cb(null, data);
-		}).catch(function (err) {
-			library.logger.error("stack", err.stack);
-			return cb('Blocks#list error');
-		});
+		return cb(null, data);
 	}).catch(function (err) {
 		library.logger.error("stack", err.stack);
 		return cb('Blocks#list error');
@@ -1639,7 +1629,7 @@ shared.getBlocks = function (req, cb) {
 				if (err) {
 					return sequenceCb(err);
 				}
-				return sequenceCb(null, {blocks: data.blocks, count: data.count});
+				return sequenceCb(null, {blocks: data.blocks});
 			});
 		}, cb);
 	});
