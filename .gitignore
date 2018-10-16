@@ -12,10 +12,6 @@ ssl/
 stacktrace*
 tmp
 .tags
-config.testnet.json
-genesisBlock.testnet.json
-config.mainnet.json
-genesisBlock.mainnet.json
 .vagrant
 private/genesisPassphrase.*
 private/delegatesPassphrases.*
