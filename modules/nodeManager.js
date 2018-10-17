@@ -136,12 +136,18 @@ NodeManager.prototype.onPeersUpdated = function() {
 
 //
 NodeManager.prototype.onNetworkObserved = function(network){
+		__private.isSyncing = true;
 	if(!__private.lastBlock || network.height > __private.lastBlock.height){
 		library.bus.message('downloadBlocks', function(err,lastBlock){
-
+				__private.isSyncing = false;
+			modules.autoupdates.getMissedUpdate();
 		});
 	}
 }
+
+NodeManager.prototype.isSyncing = function () {
+	return __private.isSyncing;
+};
 
 //
 //__EVENT__ `onBlocksReceived`

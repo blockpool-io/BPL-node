@@ -59,6 +59,11 @@ module.exports = {
 				type: 'integer',
 				minimum: 0,
 				maximum: constants.fixedPoint
+			},
+			payload: {
+				type: 'string',
+				minimum: 0,
+				maximum: 256
 			}
 		}
 	},
@@ -69,9 +74,13 @@ module.exports = {
 			id: {
 				type: 'string',
 				minLength: 1
+			},
+			payload: {
+				type: 'string',
+				minLength: 1,
+				maxLength: 256
 			}
-		},
-		required: ['id']
+		}
 	},
 	getUnconfirmedTransaction: {
 		id: 'transactions.getUnconfirmedTransaction',

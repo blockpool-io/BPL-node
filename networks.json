@@ -9,7 +9,7 @@
     "wif": 170,
     "client": {
       "token": "BLOCKPOOL",
-      "tokenShortName": "BPL",
+      "ticker": "BPL",
       "symbol": "β",
       "explorer": "http://54.199.172.202:4001"
     }
@@ -24,7 +24,7 @@
     "wif": 170,
     "client": {
       "token": "BLOCKPOOL",
-      "tokenShortName": "BPL",
+      "ticker": "BPL",
       "symbol": "β",
       "explorer": "http://13.231.247.234:8081"
     }
@@ -39,7 +39,7 @@
     "wif": 170,
     "client": {
       "token": "BLOCKPOOL",
-      "tokenShortName": "BPL",
+      "ticker": "BPL",
       "symbol": "β",
       "explorer": "http://13.56.163.57:9031"
     }
@@ -54,7 +54,7 @@
     "wif": 1,
     "client": {
       "token": "Bitcoin",
-      "tokenShortName": "BTC",
+      "ticker": "BTC",
       "symbol": "B"
     }
   }

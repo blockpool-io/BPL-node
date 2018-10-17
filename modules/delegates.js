@@ -244,20 +244,23 @@ __private.forge = function (cb) {
 	var currentSlot = slots.getSlotNumber();
 	// If we are supposed to forge now, be sure we got the very last block
 	var lastBlock = modules.blockchain.getLastBlock();
+
 	if (!lastBlock || currentSlot === slots.getSlotNumber(lastBlock.timestamp)) {
 		err = 'Last block within same delegate slot';
 		return cb(err);
 	}
-
 	__private.getBlockSlotData(currentSlot, lastBlock.height + 1, function (err, currentBlockData) {
 		if (err || currentBlockData === null) {
 			err = err || 'Skipping delegate slot';
 			return cb(err);
 		}
 
-
 		var coldstart = library.config.forging.coldstart ? library.config.forging.coldstart : 60;
-		if ((slots.getSlotNumber(currentBlockData.time) === slots.getSlotNumber()) && (new Date().getTime()-__private.coldstart > coldstart*1000)) {
+
+		//After node has completed syncing if it has missed any autoupdate while node was inactive
+		//then update is downloaded, while download is in progress restrict forging else node might fork
+		//forging will start once download is complete and code base switch takes place
+		if ((slots.getSlotNumber(currentBlockData.time) === slots.getSlotNumber()) && (new Date().getTime()-__private.coldstart > coldstart*1000) && !modules.autoupdates.isSoftwareDownloadInProgress()) {
 			modules.transactionPool.fillPool(constants.maxTxsPerBlock, function(err){
 				// Using PBFT observation: if a good quorum is at the same height with same blockid -> let's forge
 				// TODO: we should pre ask network quorum if i can send this forged block, sending node publicKey, a timestamp and a signature of the timestamp.

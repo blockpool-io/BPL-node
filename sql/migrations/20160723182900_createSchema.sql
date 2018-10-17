@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS "transactions"(
   "vendorField" VARCHAR(64),
   "signatures" TEXT,
   "rawasset" TEXT,
+  "payload" VARCHAR(50) default NULL,
   FOREIGN KEY("blockId") REFERENCES "blocks"("id") ON DELETE CASCADE
 );
 
