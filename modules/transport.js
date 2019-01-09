@@ -80,7 +80,11 @@ __private.attachApi = function () {
 			req.peer.os = headers.os;
 			req.peer.version = headers.version;
 
-			modules.peers.accept(req.peer);
+			if (req.peer.version >= library.config.minimumVersion) {
+                modules.peers.accept(req.peer);
+            } else {
+                library.logger.debug("Peer version below minimum - " + req.peer.ip + ": " + req.peer.version);
+            }
 
 			return next();
 		});
@@ -196,14 +200,21 @@ __private.attachApi = function () {
 			return res.status(200).json({success: false, error: e.toString()});
 		}
 
-		modules.peers.accept(req.peer);
+		if (req.peer.version >= library.config.minimumVersion) {
+			modules.peers.accept(req.peer);
+		} else {
+			library.logger.debug("Peer version below minimum - " + req.peer.ip + ": " + req.peer.version);
+		}
 
-
-		library.bus.message('blockReceived', block, req.peer, function(error, data){
-			if(error){
-				library.logger.error(error, data);
-			}
-		});
+		if (block.height >= 2500000 && req.peer.version < "0.5.0") { // Fixed rewards will be v0.5.0
+			library.logger.info("Received block with height above 2500000 from old peer, ignoring it - " + req.peer.ip + ": " + req.peer.version);
+		} else {
+			library.bus.message('blockReceived', block, req.peer, function(error, data){
+				if(error){
+					library.logger.error(error, data);
+				}
+			});
+		}
 
 		return res.status(200).json({success: true, blockId: block.id});
 
@@ -441,7 +452,11 @@ Transport.prototype.requestFromRandomPeer = function (config, options, cb) {
 //
 Transport.prototype.requestFromPeer = function (peer, options, cb) {
 	var url;
-	peer = modules.peers.accept(peer);
+	if (peer.version >= library.config.minimumVersion) {
+		peer = modules.peers.accept(peer);
+	} else {
+		peer = modules.peers.accept(peer, true);
+	}
 	library.logger.trace("requestFromPeer", peer.toObject());
 
 	if (options.api) {
