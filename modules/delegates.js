@@ -604,8 +604,8 @@ Delegates.prototype.validateBlockSlot = function (block, cb) {
 			return cb(null, block);
 		} else if (block.height > 1975000 && block.height < 2500000) {
 			// Exempt slot validation for blocks forged during the great 2018Q4 DB crisis.
-            library.logger.warn('Exempting block from slot validation: ' + block.height);
-            return cb(null, block);
+        		library.logger.warn('Exempting block from slot validation: ' + block.height);
+			return cb(null, block);
 		} else {
 			library.logger.error('Expected generator: ' + delegate_id + ' Received generator: ' + block.generatorPublicKey);
 			return cb('Failed to verify slot: ' + currentSlot);
