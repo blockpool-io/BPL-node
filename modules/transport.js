@@ -206,11 +206,15 @@ __private.attachApi = function () {
 			library.logger.debug("Peer version below minimum - " + req.peer.ip + ": " + req.peer.version);
 		}
 
-		library.bus.message('blockReceived', block, req.peer, function(error, data){
-			if(error){
-				library.logger.error(error, data);
-			}
-		});
+		if (block.height >= 2500000 && req.peer.version < "0.5.0") { // Fixed rewards will be v0.5.0
+			library.logger.info("Received block with height above 2500000 from old peer, ignoring it - " + req.peer.ip + ": " + req.peer.version);
+		} else {
+			library.bus.message('blockReceived', block, req.peer, function(error, data){
+				if(error){
+					library.logger.error(error, data);
+				}
+			});
+		}
 
 		return res.status(200).json({success: true, blockId: block.id});
 
