@@ -603,8 +603,28 @@ Delegates.prototype.validateBlockSlot = function (block, cb) {
 		if (delegate_id && block.generatorPublicKey === delegate_id) {
 			return cb(null, block);
 		} else {
-			library.logger.error('Expected generator: ' + delegate_id + ' Received generator: ' + block.generatorPublicKey);
-			return cb('Failed to verify slot: ' + currentSlot);
+			if (
+				round == 9827 && 
+				delegate_id === "03cebf74bbbd3c09ad6e99ea22c70dfbc0aca5f90db3878134726f75f3a4b1f419" && 
+				block.generatorPublicKey === "02940f787a45d6524f5ced2dbe952db721c7492918ba07ddd0934269d326db219f"
+			) { 
+				/*
+				 * mitigation for expected generator errors that occur on a clean sync 
+				 * due to a corrupted database state propogated through a bad snapshot
+				 *
+				 * precision issues caused delegate vote amounts to drift by a couple 
+				 * BPLtoshis for several rounds until it was enough to cause delegates to 
+				 * swap ranks
+				 *
+				 * allow the affected delegate to forge out of turn, only for this round
+				 * BPL_MC_116 forges during BPL_MC_132's turn
+				 */
+				library.logger.info('Allowing BPL_MC_116 to forge in BPL_MC_132\'s place for round 9827');
+				return cb(null, block);
+			} else {
+				library.logger.error('Expected generator: ' + delegate_id + ' Received generator: ' + block.generatorPublicKey);
+				return cb('Failed to verify slot: ' + currentSlot);
+			}
 		}
 	});
 };
