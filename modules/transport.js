@@ -207,7 +207,7 @@ __private.attachApi = function () {
 		}
 
 		if (block.height > 2499837 && req.peer.version < "0.4.3") { // Reject blocks from old peers since they will still have the bad votes from round 9823
-			library.logger.info("Received block with height above 2499837 from old peer, ignoring it - " + req.peer.ip + ": " + req.peer.version);
+			library.logger.debug("Received block with height above 2499837 from old peer, ignoring it - " + req.peer.ip + ": " + req.peer.version);
 		} else {
 			library.bus.message('blockReceived', block, req.peer, function(error, data){
 				if(error){
