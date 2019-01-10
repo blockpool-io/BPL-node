@@ -175,36 +175,85 @@ Rounds.prototype.backwardTick = function(block, cb){
 	});
 };
 
+/*
+ * mitigation for expected generator errors that occur on a clean sync 
+ * due to a corrupted database state propogated through a bad snapshot
+ *
+ * re-apply votes that were unvoted in round 9823 block 1974290, but persisted in the bad DB
+ * do a delete first just as a protection against rewind shenanigans since there's no constraint on this table
+ *
+ * in case of a backwards tick after applying, just delete the votes as we cross back into round 9823
+ * so the unvotes can be properly reverted if it ticks back far enough
+ *
+ * round 12437 ends at block 2499837, remove the votes at that point
+ *
+ * in case of a backwards tick after removing the votes in round 12437, put the votes back to allow slot validation to succeed
+ */
+__private.checkAndFixDatabaseState = function(block, cb) {
+	var badround = 9823;
+	var cleanround = 12437;
+
+	if(
+		(self.getRoundFromHeight(block.height) == badround && __private.current == badround) || 
+		(self.getRoundFromHeight(block.height) == cleanround && __private.current == cleanround + 1)
+	) {
+		library.logger.info("Fixing DB state due to round 9823 issues. Restoring votes.");
+		library.db.none('DELETE FROM mem_accounts2delegates WHERE "accountId" IN ' + 
+							'(\'BLuFPk7w2QpvT3S67iLejmhzrcxXYNfvx8\', \'BAdB4EwqsXmodb49UA1vTZcQq9id91hLVW\', \'BCaDpHnVVGSZzk2LHr57p6juHMj7FasKZi\');' + 
+						'INSERT INTO mem_accounts2delegates VALUES ' + 
+							'(\'BLuFPk7w2QpvT3S67iLejmhzrcxXYNfvx8\', \'02be3547360e47f3169bff6fee5e016381d85dd4ba814d73aca859a9fdc9435fb5\'),' +
+							'(\'BAdB4EwqsXmodb49UA1vTZcQq9id91hLVW\', \'039476ed9678c3b95d7f46d09f01572fcce7f2ed4be79a10f9f325230d7f4e15ad\'),' +
+							'(\'BCaDpHnVVGSZzk2LHr57p6juHMj7FasKZi\', \'039388ae2ade9404981e92115b0b346d002b6bfdf4a58e6f76b1f54e902080af9d\');'
+		).then(cb).catch(cb);
+	} else if(
+		(self.getRoundFromHeight(block.height) == badround && __private.current == badround + 1) || 
+		(self.getRoundFromHeight(block.height) == cleanround && __private.current == cleanround)
+	) { 
+		library.logger.info("Fixing DB state due to round 9823 issues. Removing votes.");
+		library.db.none('DELETE FROM mem_accounts2delegates WHERE "accountId" IN ' + 
+							'(\'BLuFPk7w2QpvT3S67iLejmhzrcxXYNfvx8\', \'BAdB4EwqsXmodb49UA1vTZcQq9id91hLVW\', \'BCaDpHnVVGSZzk2LHr57p6juHMj7FasKZi\');'
+		).then(cb).catch(cb);
+	} else {
+		return cb();
+	}
+}
+
 // Changing round on next block
 __private.changeRoundForward = function(block, cb){
 	var nextround = __private.current + 1;
 
-	__private.updateTotalVotesOnDatabase(function(err){
+	__private.checkAndFixDatabaseState(block, function(err) {
 		if(err){
 			return cb(err, block);
-		}
-		else {
-			__private.generateDelegateList(nextround, function(err, fullactivedelegates){
+		} else {
+			__private.updateTotalVotesOnDatabase(function(err){
 				if(err){
 					return cb(err, block);
 				}
 				else {
-					__private.collectedfees[nextround] = 0;
-					__private.forgers[nextround] = [];
-					__private.activedelegates[nextround] = fullactivedelegates.map(function(ad){return ad.publicKey});
-					__private.updateActiveDelegatesStats(function(err){
+					__private.generateDelegateList(nextround, function(err, fullactivedelegates){
 						if(err){
 							return cb(err, block);
 						}
-						else{
-							__private.saveActiveDelegatesOnDatabase(fullactivedelegates, nextround, function(err){
+						else {
+							__private.collectedfees[nextround] = 0;
+							__private.forgers[nextround] = [];
+							__private.activedelegates[nextround] = fullactivedelegates.map(function(ad){return ad.publicKey});
+							__private.updateActiveDelegatesStats(function(err){
 								if(err){
 									return cb(err, block);
 								}
 								else{
-									// we are good to go, let's move to the new round
-									__private.current = nextround;
-									return cb(null, block);
+									__private.saveActiveDelegatesOnDatabase(fullactivedelegates, nextround, function(err){
+										if(err){
+											return cb(err, block);
+										}
+										else{
+											// we are good to go, let's move to the new round
+											__private.current = nextround;
+											return cb(null, block);
+										}
+									});
 								}
 							});
 						}
@@ -226,28 +275,34 @@ __private.checkAndChangeRoundBackward = function(block, cb){
 	}
 	// round change prepare the previous round data
 	else {
-		library.logger.info("Detected backward round change, preparing data for round", blockround);
-		delete __private.activedelegates[round];
-		delete __private.forgers[round];
-		__private.current = blockround;
+		__private.checkAndFixDatabaseState(block, function(err) {
+			if(err){
+				return cb(err, block);
+			} else {
+				library.logger.info("Detected backward round change, preparing data for round", blockround);
+				delete __private.activedelegates[round];
+				delete __private.forgers[round];
+				__private.current = blockround;
 
-		return async.series([
-			function(seriesCb){
-				library.db.none("delete from mem_delegates where round = "+round).then(seriesCb).catch(seriesCb);
-			},
-			function(seriesCb){
-				self.getActiveDelegates(seriesCb);
-			},
-			function(seriesCb){
-				__private.getCurrentRoundForgers(function(err, forgers){
-					__private.forgers[blockround]=forgers.map(function(forger){
-						return forger.publicKey;
-					});
-					return seriesCb(err, block);
+				return async.series([
+					function(seriesCb){
+						library.db.none("delete from mem_delegates where round = "+round).then(seriesCb).catch(seriesCb);
+					},
+					function(seriesCb){
+						self.getActiveDelegates(seriesCb);
+					},
+					function(seriesCb){
+						__private.getCurrentRoundForgers(function(err, forgers){
+							__private.forgers[blockround]=forgers.map(function(forger){
+								return forger.publicKey;
+							});
+							return seriesCb(err, block);
+						});
+					}
+				], function(err){
+					return cb(err, block);
 				});
 			}
-		], function(err){
-			return cb(err, block);
 		});
 	}
 };
