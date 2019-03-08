@@ -3,7 +3,6 @@
 var async = require('async');
 var constants = require('../constants.json');
 var slots = require('../helpers/slots.js');
-var constants = require('../constants.json');
 
 var self, library, modules;
 
@@ -477,19 +476,13 @@ __private.timestampState = function (lastReceipt) {
 
 	var timeNow = new Date().getTime();
 	__private.lastReceipt.secondsAgo = Math.floor((timeNow -  __private.lastReceipt.date.getTime()) / 1000);
-	if(modules.delegates.isActiveDelegate()){
-		__private.lastReceipt.stale = __private.lastReceipt.secondsAgo > 100;
-		__private.lastReceipt.rebuild = __private.lastReceipt.secondsAgo > 600;
-	}
 
-	else if(modules.delegates.isForging()){
-		__private.lastReceipt.stale = __private.lastReceipt.secondsAgo > 300;
-		__private.lastReceipt.rebuild = __private.lastReceipt.secondsAgo > 1000;
-	}
-
-	else {
-		__private.lastReceipt.stale = __private.lastReceipt.secondsAgo > 600;
-		__private.lastReceipt.rebuild = __private.lastReceipt.secondsAgo > 2000;
+	if (modules.delegates.isActiveDelegate() || modules.delegates.isForging()){
+		__private.lastReceipt.stale = __private.lastReceipt.secondsAgo > constants.blocktime + 5; // 20 seconds
+		__private.lastReceipt.rebuild = __private.lastReceipt.secondsAgo > constants.blocktime * 40; // 600 seconds
+	} else {
+		__private.lastReceipt.stale = __private.lastReceipt.secondsAgo > constants.blocktime * 10; // 150 seconds
+		__private.lastReceipt.rebuild = __private.lastReceipt.secondsAgo > constants.blocktime * 100; // 1500 seconds
 	}
 
 	if(__private.lastBlock.height < (constants.activeDelegates + 1)){
