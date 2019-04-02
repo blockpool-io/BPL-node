@@ -607,7 +607,7 @@ shared.getRound = function (req, cb) {
 				var lastBlockOfLastRound = blocks.shift()
 				library.db.query(sql.getRoundDelegates, { round: round })
 					.then(function (delegates) {
-						var currentSupply = blocks[blocks.length - 1].supply;
+						var currentSupply = (blocks.length > 0 ? blocks[blocks.length - 1] : lastBlockOfLastRound).supply;
 						delegates.forEach(function (delegate, i) {
 							// Copied directly from modules/delegates lines 542-550 
 							delegate.rate = i + 1;
